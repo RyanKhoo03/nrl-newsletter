@@ -13,9 +13,9 @@
 | 📋 **Round Results** | Visual match cards with scores and winners |
 | 🏆 **Ladder** | Full top 8 with home/away splits and form |
 | 📈 **Team Trajectory** | Last 4 rounds vs season average — who's rising or fading |
-| ⚡ **Key Injuries** | High-profile players (60+ SC avg) currently unavailable |
-| 🤖 **Model Predictions** | Our ML model vs Sportsbet odds with value bet flags |
 | 🎲 **Sportsbet Odds** | Live head-to-head odds for the upcoming round |
+| 🤖 **Model Predictions** | Our ML model vs Sportsbet odds with value bet flags |
+| ⚡ **Key Injuries** | High-profile players (60+ SC avg) currently unavailable |
 | 🏅 **SuperCoach Draft Tips** | Top plays, value picks, avoid list + analyst notes |
 | 🏥 **Injury Report** | Full injury and suspension list, sorted by severity |
  
