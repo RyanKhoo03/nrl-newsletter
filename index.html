@@ -1,0 +1,2203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NRL Analytics Weekly — Round 11</title>
+<style>
+  body { font-family: Arial, Helvetica, sans-serif; background:#0f172a; margin:0; padding:28px; color:#111827; }
+  .wrap { max-width:1100px; margin:0 auto; }
+  .card { background:#fff; border:1px solid #e5e7eb; border-radius:16px; padding:28px; margin-bottom:24px; }
+  .card-results  { background:linear-gradient(160deg,#f0fdf4 0%,#fff 40%); border-color:#bbf7d0; border-top:4px solid #22c55e; color:#111827 !important; }
+  .card-ladder   { background:linear-gradient(160deg,#fefce8 0%,#fff 40%); border-color:#fde68a; border-top:4px solid #eab308; color:#111827 !important; }
+  .card-traj     { background:linear-gradient(160deg,#eff6ff 0%,#fff 40%); border-color:#bfdbfe; border-top:4px solid #3b82f6; color:#111827 !important; }
+  .card-odds     { background:linear-gradient(160deg,#fdf4ff 0%,#fff 40%); border-color:#e9d5ff; border-top:4px solid #a855f7; color:#111827 !important; }
+  .card-model    { background:linear-gradient(160deg,#fff7ed 0%,#fff 40%); border-color:#fed7aa; border-top:4px solid #f97316; color:#111827 !important; }
+  .card-injury-key { background:linear-gradient(160deg,#fff7ed 0%,#fff 40%); border-color:#fed7aa; border-top:4px solid #f97316; color:#111827 !important; }
+  .card-sc       { background:linear-gradient(160deg,#f0fdf4 0%,#fff 40%); border-color:#bbf7d0; border-top:4px solid #16a34a; color:#111827 !important; }
+  .card-injury   { background:linear-gradient(160deg,#fef2f2 0%,#fff 40%); border-color:#fca5a5; border-top:4px solid #ef4444; color:#111827 !important; }
+  .card-results *, .card-ladder *, .card-traj *, .card-odds *,
+  .card-model *, .card-injury-key *, .card-sc *, .card-injury * { color:#111827; }
+  .card-results tr:hover td, .card-ladder tr:hover td, .card-traj tr:hover td,
+  .card-odds tr:hover td, .card-injury tr:hover td { background:rgba(0,0,0,0.03); color:#111827; }
+  .header { background:#1e293b; color:#fff; border-radius:16px; padding:32px 24px; text-align:center; margin-bottom:24px; border-top:4px solid #f97316; box-shadow:0 0 40px rgba(249,115,22,0.15), 0 8px 32px rgba(0,0,0,0.5); }
+  .header h1 { margin:8px 0; font-size:2.6rem; }
+  h2 { font-size:1.6rem; margin:0 0 18px 0; color:#0f172a; border-bottom:2px solid #e5e7eb; padding-bottom:10px; }
+  h3 { font-size:1.15rem; margin:18px 0 12px; }
+  table { width:100%; border-collapse:collapse; font-size:15px; }
+  th { background:#f8fafc; padding:12px 14px; border-bottom:2px solid #e5e7eb; text-align:left; font-weight:600; color:#374151; font-size:14px; }
+  td { padding:12px 14px; border-bottom:1px solid #f1f5f9; font-size:15px; }
+  tr:hover td { background:#f8fafc; }
+  .badge { display:inline-block; padding:4px 12px; border-radius:999px; font-size:13px; font-weight:bold; }
+  .badge-green  { background:#dcfce7; color:#166534; }
+  .badge-red    { background:#fee2e2; color:#991b1b; }
+  .badge-yellow { background:#fef3c7; color:#92400e; }
+  .badge-blue   { background:#dbeafe; color:#1e40af; }
+  .pill-w { display:inline-block;background:#16a34a;color:#fff;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:bold;margin-right:2px; }
+  .pill-l { display:inline-block;background:#dc2626;color:#fff;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:bold;margin-right:2px; }
+  .pill-d { display:inline-block;background:#f59e0b;color:#fff;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:bold;margin-right:2px; }
+  .traj-up { color:#16a34a !important;font-weight:bold; }
+  .traj-dn { color:#dc2626 !important;font-weight:bold; }
+  .traj-nt { color:#6b7280 !important; }
+  .section-intro { color:#6b7280 !important;font-size:14px;margin:-8px 0 18px 0;line-height:1.6; }
+  .sc-box { background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:14px 18px;margin-bottom:10px; }
+  .sc-box.value { background:#eff6ff;border-color:#93c5fd; }
+  .sc-avoid { background:#fef2f2;border:1px solid #fca5a5;border-radius:10px;padding:14px 18px;margin-bottom:10px; }
+  .note-box { background:#f8fafc;border-left:3px solid #64b5f6;padding:12px 16px;margin-bottom:12px;border-radius:4px;font-size:14px; }
+  .key-injury { background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:14px 18px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center; }
+  .footer { text-align:center;color:#9ca3af;font-size:13px;padding:24px 0; }
+  @media (max-width: 600px) {
+
+    /* ── General ── */
+    body { padding: 12px; }
+    .wrap { max-width: 100%; }
+    .card { padding: 16px; margin-bottom: 16px; }
+    h2 { font-size: 1.25rem; }
+    h3 { font-size: 1rem; }
+    table { font-size: 13px; }
+    th, td { padding: 8px 10px; }
+
+    /* ── Header ── */
+    .header { padding: 20px 16px; }
+    .header h1 { font-size: 1.7rem; }
+    .header > div:last-child { gap: 10px; }
+    .header > div:last-child > div { padding: 8px 12px; }
+
+    /* ── Results score card ── */
+    .result-grid { grid-template-columns: 1fr 90px 1fr !important; }
+
+    /* ── Ladder — hide less important columns ── */
+    .ladder-hide { display: none; }
+
+    /* ── Trajectory table — hide last 2 cols ── */
+    .traj-hide { display: none; }
+
+    /* ── Model predictions header ── */
+    .pred-header { grid-template-columns: 1fr 120px 1fr !important; }
+    .pred-stats  { grid-template-columns: 1fr 1fr !important; }
+
+    /* ── Odds table — hide date and favourite ── */
+    .odds-hide { display: none; }
+
+    /* ── Injury filter controls ── */
+    #inj-team-filter, #inj-sort { font-size: 13px; padding: 5px 8px; }
+
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="header">
+  <div style="opacity:0.8;font-size:1rem;letter-spacing:1px;text-transform:uppercase;">Weekly Data-Driven Rugby League Analysis</div>
+  <h1>🏉 NRL Analytics Weekly</h1>
+  <div style="font-size:1.3rem;font-weight:600;margin-top:4px;">Round 11 — 2026 Season</div>
+  <div style="margin-top:14px;display:flex;justify-content:center;gap:16px;flex-wrap:wrap;">
+    <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:10px 20px;font-size:14px;">
+      <div style="opacity:0.7;font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;">2026 Season</div>
+      <div style="font-weight:800;font-size:18px;">64%
+        <span style="font-size:12px;opacity:0.7;font-weight:400;">(51/80)</span>
+      </div>
+    </div>
+    <div style="background:rgba(255,255,255,0.15);border-radius:10px;padding:10px 20px;font-size:14px;border:1px solid rgba(255,255,255,0.2);">
+      <div style="opacity:0.7;font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;">Last 4 Rounds (R7–R10)</div>
+      <div style="font-weight:800;font-size:18px;color:#86efac;">
+        75%
+        <span style="font-size:12px;opacity:0.7;font-weight:400;color:#fff;">(24/32)</span>
+      </div>
+    </div>
+    <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:10px 20px;font-size:14px;">
+      <div style="opacity:0.7;font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;">2025 Benchmark</div>
+      <div style="font-weight:800;font-size:18px;">62.4%
+        <span style="font-size:12px;opacity:0.7;font-weight:400;">(213 matches)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card card-results">
+  <h2>📋 Round 10 Results — Model Report Card</h2>
+  <div style="margin-bottom:10px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;"><span style="font-size:13px;color:#6b7280;">😴 Bye Round 10:</span> <div style="display:inline-flex;align-items:center;gap:5px;background:#f0fdf4;border-radius:999px;padding:3px 10px 3px 3px;border:1px solid #bbf7d0;"><div style="width:22px;height:22px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/warriors/202605110452" alt="Warriors" style="width:22px;height:22px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:22px;height:22px;border-radius:8px;background:#0057A8;color:#00A550;align-items:center;justify-content:center;font-size:6px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">NZL</div></div><span style="font-weight:600;font-size:13px;">Warriors</span></div></div>
+  <p class="section-intro">
+    <strong style='color:#166534;'>Round accuracy: 6/8 (75%)</strong> &nbsp;·&nbsp; 
+    ✅ correct &nbsp; ❌ wrong &nbsp; 🎲 toss-up (&lt;55% conf)
+  </p>
+
+  <div style="border-bottom:1px solid #e5e7eb;margin-bottom:2px;">
+    <div class="result-grid" style="display:grid;grid-template-columns:1fr 150px 1fr;align-items:stretch;overflow:hidden;">
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:14px;padding:16px 14px;background:linear-gradient(90deg,#bbf7d0,#f0fdf4);">
+        <div style="text-align:right;">
+          <div style="font-weight:800;color:#0f172a;font-size:17px;">Dolphins</div>
+          <div style='font-size:11px;font-weight:800;color:#15803d;margin-top:2px;'>✓ WINNER</div>
+        </div>
+        <div style="width:48px;height:48px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/dolphins/202605110452" alt="Dolphins" style="width:48px;height:48px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:48px;height:48px;border-radius:8px;background:#CC0000;color:#FFFFFF;align-items:center;justify-content:center;font-size:13px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">DOL</div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 8px;background:#0f172a;color:#fff;">
+        <div style="font-size:1.7rem;font-weight:900;letter-spacing:-1px;line-height:1;color:#fff;">44 - 12</div>
+        <div style="font-size:10px;opacity:0.6;margin-top:4px;text-transform:uppercase;letter-spacing:1.5px;color:#fff;">Full Time</div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:flex-start;gap:14px;padding:16px 14px;background:#fafafa;">
+        <div style="width:48px;height:48px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/bulldogs/202510310458" alt="Bulldogs" style="width:48px;height:48px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:48px;height:48px;border-radius:8px;background:#0033A0;color:#FFFFFF;align-items:center;justify-content:center;font-size:13px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">BUL</div></div>
+        <div style="text-align:left;">
+          <div style="font-weight:500;color:#6b7280;font-size:17px;">Bulldogs</div>
+          
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;background:#eff6ff;border-top:1px solid rgba(0,0,0,0.05);padding:8px 16px;font-size:14px;font-weight:700;color:#1e40af;"><span style="font-size:18px;">🎲</span><span>Model: Toss-up — tipped Dolphins (54.8%)</span></div>
+  </div>
+  <div style="border-bottom:1px solid #e5e7eb;margin-bottom:2px;">
+    <div class="result-grid" style="display:grid;grid-template-columns:1fr 150px 1fr;align-items:stretch;overflow:hidden;">
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:14px;padding:16px 14px;background:linear-gradient(90deg,#bbf7d0,#f0fdf4);">
+        <div style="text-align:right;">
+          <div style="font-weight:800;color:#0f172a;font-size:17px;">Roosters</div>
+          <div style='font-size:11px;font-weight:800;color:#15803d;margin-top:2px;'>✓ WINNER</div>
+        </div>
+        <div style="width:48px;height:48px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/roosters/202605110452" alt="Roosters" style="width:48px;height:48px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:48px;height:48px;border-radius:8px;background:#003087;color:#CC0000;align-items:center;justify-content:center;font-size:13px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">SYD</div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 8px;background:#0f172a;color:#fff;">
+        <div style="font-size:1.7rem;font-weight:900;letter-spacing:-1px;line-height:1;color:#fff;">28 - 12</div>
+        <div style="font-size:10px;opacity:0.6;margin-top:4px;text-transform:uppercase;letter-spacing:1.5px;color:#fff;">Full Time</div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:flex-start;gap:14px;padding:16px 14px;background:#fafafa;">
+        <div style="width:48px;height:48px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/titans/202605110452" alt="Titans" style="width:48px;height:48px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:48px;height:48px;border-radius:8px;background:#009FDF;color:#000000;align-items:center;justify-content:center;font-size:13px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">GCT</div></div>
+        <div style="text-align:left;">
+          <div style="font-weight:500;color:#6b7280;font-size:17px;">Titans</div>
+          
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;background:#dcfce7;border-top:1px solid rgba(0,0,0,0.05);padding:8px 16px;font-size:14px;font-weight:700;color:#166534;"><span style="font-size:18px;">✅</span><span>Model: Correct — Roosters (72.7%)</span></div>
+  </div>
+  <div style="border-bottom:1px solid #e5e7eb;margin-bottom:2px;">
+    <div class="result-grid" style="display:grid;grid-template-columns:1fr 150px 1fr;align-items:stretch;overflow:hidden;">
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:14px;padding:16px 14px;background:#fafafa;">
+        <div style="text-align:right;">
+          <div style="font-weight:500;color:#6b7280;font-size:17px;">Cowboys</div>
+          
+        </div>
+        <div style="width:48px;height:48px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/cowboys/202605110452" alt="Cowboys" style="width:48px;height:48px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:48px;height:48px;border-radius:8px;background:#003087;color:#FFD700;align-items:center;justify-content:center;font-size:13px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">NQL</div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 8px;background:#0f172a;color:#fff;">
+        <div style="font-size:1.7rem;font-weight:900;letter-spacing:-1px;line-height:1;color:#fff;">30 - 33</div>
+        <div style="font-size:10px;opacity:0.6;margin-top:4px;text-transform:uppercase;letter-spacing:1.5px;color:#fff;">Full Time</div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:flex-start;gap:14px;padding:16px 14px;background:linear-gradient(270deg,#bbf7d0,#f0fdf4);">
+        <div style="width:48px;height:48px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/eels/202605110452" alt="Eels" style="width:48px;height:48px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:48px;height:48px;border-radius:8px;background:#0033CC;color:#FFD700;align-items:center;justify-content:center;font-size:13px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">PAR</div></div>
+        <div style="text-align:left;">
+          <div style="font-weight:800;color:#0f172a;font-size:17px;">Eels</div>
+          <div style='font-size:11px;font-weight:800;color:#15803d;margin-top:2px;'>✓ WINNER</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;background:#fee2e2;border-top:1px solid rgba(0,0,0,0.05);padding:8px 16px;font-size:14px;font-weight:700;color:#991b1b;"><span style="font-size:18px;">❌</span><span>Model: Wrong — tipped Cowboys (64.1%)</span></div>
+  </div>
+  <div style="border-bottom:1px solid #e5e7eb;margin-bottom:2px;">
+    <div class="result-grid" style="display:grid;grid-template-columns:1fr 150px 1fr;align-items:stretch;overflow:hidden;">
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:14px;padding:16px 14px;background:#fafafa;">
+        <div style="text-align:right;">
+          <div style="font-weight:500;color:#6b7280;font-size:17px;">Dragons</div>
+          
+        </div>
+        <div style="width:48px;height:48px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/dragons/202602250432" alt="Dragons" style="width:48px;height:48px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:48px;height:48px;border-radius:8px;background:#442400;color:#CC0000;align-items:center;justify-content:center;font-size:13px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">SGI</div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 8px;background:#0f172a;color:#fff;">
+        <div style="font-size:1.7rem;font-weight:900;letter-spacing:-1px;line-height:1;color:#fff;">10 - 44</div>
+        <div style="font-size:10px;opacity:0.6;margin-top:4px;text-transform:uppercase;letter-spacing:1.5px;color:#fff;">Full Time</div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:flex-start;gap:14px;padding:16px 14px;background:linear-gradient(270deg,#bbf7d0,#f0fdf4);">
+        <div style="width:48px;height:48px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/knights/202605110452" alt="Knights" style="width:48px;height:48px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:48px;height:48px;border-radius:8px;background:#003B8E;color:#C0C0C0;align-items:center;justify-content:center;font-size:13px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">NEW</div></div>
+        <div style="text-align:left;">
+          <div style="font-weight:800;color:#0f172a;font-size:17px;">Knights</div>
+          <div style='font-size:11px;font-weight:800;color:#15803d;margin-top:2px;'>✓ WINNER</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;background:#dcfce7;border-top:1px solid rgba(0,0,0,0.05);padding:8px 16px;font-size:14px;font-weight:700;color:#166534;"><span style="font-size:18px;">✅</span><span>Model: Correct — Knights (60.3%)</span></div>
+  </div>
+  <div style="border-bottom:1px solid #e5e7eb;margin-bottom:2px;">
+    <div class="result-grid" style="display:grid;grid-template-columns:1fr 150px 1fr;align-items:stretch;overflow:hidden;">
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:14px;padding:16px 14px;background:linear-gradient(90deg,#bbf7d0,#f0fdf4);">
+        <div style="text-align:right;">
+          <div style="font-weight:800;color:#0f172a;font-size:17px;">Rabbitohs</div>
+          <div style='font-size:11px;font-weight:800;color:#15803d;margin-top:2px;'>✓ WINNER</div>
+        </div>
+        <div style="width:48px;height:48px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/rabbitohs/202605110452" alt="Rabbitohs" style="width:48px;height:48px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:48px;height:48px;border-radius:8px;background:#006A4E;color:#FF0000;align-items:center;justify-content:center;font-size:13px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">SOU</div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 8px;background:#0f172a;color:#fff;">
+        <div style="font-size:1.7rem;font-weight:900;letter-spacing:-1px;line-height:1;color:#fff;">36 - 12</div>
+        <div style="font-size:10px;opacity:0.6;margin-top:4px;text-transform:uppercase;letter-spacing:1.5px;color:#fff;">Full Time</div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:flex-start;gap:14px;padding:16px 14px;background:#fafafa;">
+        <div style="width:48px;height:48px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/sharks/202605110452" alt="Sharks" style="width:48px;height:48px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:48px;height:48px;border-radius:8px;background:#00AEEF;color:#000000;align-items:center;justify-content:center;font-size:13px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">CRO</div></div>
+        <div style="text-align:left;">
+          <div style="font-weight:500;color:#6b7280;font-size:17px;">Sharks</div>
+          
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;background:#eff6ff;border-top:1px solid rgba(0,0,0,0.05);padding:8px 16px;font-size:14px;font-weight:700;color:#1e40af;"><span style="font-size:18px;">🎲</span><span>Model: Toss-up — tipped Sharks (53.3%)</span></div>
+  </div>
+  <div style="border-bottom:1px solid #e5e7eb;margin-bottom:2px;">
+    <div class="result-grid" style="display:grid;grid-template-columns:1fr 150px 1fr;align-items:stretch;overflow:hidden;">
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:14px;padding:16px 14px;background:linear-gradient(90deg,#bbf7d0,#f0fdf4);">
+        <div style="text-align:right;">
+          <div style="font-weight:800;color:#0f172a;font-size:17px;">Sea Eagles</div>
+          <div style='font-size:11px;font-weight:800;color:#15803d;margin-top:2px;'>✓ WINNER</div>
+        </div>
+        <div style="width:48px;height:48px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/sea-eagles/202510300111" alt="Sea Eagles" style="width:48px;height:48px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:48px;height:48px;border-radius:8px;background:#6F263D;color:#FFFFFF;align-items:center;justify-content:center;font-size:13px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">MNL</div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 8px;background:#0f172a;color:#fff;">
+        <div style="font-size:1.7rem;font-weight:900;letter-spacing:-1px;line-height:1;color:#fff;">32 - 4</div>
+        <div style="font-size:10px;opacity:0.6;margin-top:4px;text-transform:uppercase;letter-spacing:1.5px;color:#fff;">Full Time</div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:flex-start;gap:14px;padding:16px 14px;background:#fafafa;">
+        <div style="width:48px;height:48px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/broncos/202603200353" alt="Broncos" style="width:48px;height:48px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:48px;height:48px;border-radius:8px;background:#800000;color:#FFD700;align-items:center;justify-content:center;font-size:13px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">BRO</div></div>
+        <div style="text-align:left;">
+          <div style="font-weight:500;color:#6b7280;font-size:17px;">Broncos</div>
+          
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;background:#eff6ff;border-top:1px solid rgba(0,0,0,0.05);padding:8px 16px;font-size:14px;font-weight:700;color:#1e40af;"><span style="font-size:18px;">🎲</span><span>Model: Toss-up — tipped Sea Eagles (57.5%)</span></div>
+  </div>
+  <div style="border-bottom:1px solid #e5e7eb;margin-bottom:2px;">
+    <div class="result-grid" style="display:grid;grid-template-columns:1fr 150px 1fr;align-items:stretch;overflow:hidden;">
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:14px;padding:16px 14px;background:linear-gradient(90deg,#bbf7d0,#f0fdf4);">
+        <div style="text-align:right;">
+          <div style="font-weight:800;color:#0f172a;font-size:17px;">Storm</div>
+          <div style='font-size:11px;font-weight:800;color:#15803d;margin-top:2px;'>✓ WINNER</div>
+        </div>
+        <div style="width:48px;height:48px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/storm/202605110452" alt="Storm" style="width:48px;height:48px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:48px;height:48px;border-radius:8px;background:#4F2D7F;color:#FFFFFF;align-items:center;justify-content:center;font-size:13px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">MEL</div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 8px;background:#0f172a;color:#fff;">
+        <div style="font-size:1.7rem;font-weight:900;letter-spacing:-1px;line-height:1;color:#fff;">44 - 16</div>
+        <div style="font-size:10px;opacity:0.6;margin-top:4px;text-transform:uppercase;letter-spacing:1.5px;color:#fff;">Full Time</div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:flex-start;gap:14px;padding:16px 14px;background:#fafafa;">
+        <div style="width:48px;height:48px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/wests-tigers/202605110452" alt="Wests Tigers" style="width:48px;height:48px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:48px;height:48px;border-radius:8px;background:#FF6600;color:#000000;align-items:center;justify-content:center;font-size:13px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">WST</div></div>
+        <div style="text-align:left;">
+          <div style="font-weight:500;color:#6b7280;font-size:17px;">Wests Tigers</div>
+          
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;background:#dcfce7;border-top:1px solid rgba(0,0,0,0.05);padding:8px 16px;font-size:14px;font-weight:700;color:#166534;"><span style="font-size:18px;">✅</span><span>Model: Correct — Storm (65.4%)</span></div>
+  </div>
+  <div style="border-bottom:1px solid #e5e7eb;margin-bottom:2px;">
+    <div class="result-grid" style="display:grid;grid-template-columns:1fr 150px 1fr;align-items:stretch;overflow:hidden;">
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:14px;padding:16px 14px;background:#fafafa;">
+        <div style="text-align:right;">
+          <div style="font-weight:500;color:#6b7280;font-size:17px;">Raiders</div>
+          
+        </div>
+        <div style="width:48px;height:48px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/raiders/202605110452" alt="Raiders" style="width:48px;height:48px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:48px;height:48px;border-radius:8px;background:#01B65C;color:#000000;align-items:center;justify-content:center;font-size:13px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">CAN</div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 8px;background:#0f172a;color:#fff;">
+        <div style="font-size:1.7rem;font-weight:900;letter-spacing:-1px;line-height:1;color:#fff;">18 - 30</div>
+        <div style="font-size:10px;opacity:0.6;margin-top:4px;text-transform:uppercase;letter-spacing:1.5px;color:#fff;">Full Time</div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:flex-start;gap:14px;padding:16px 14px;background:linear-gradient(270deg,#bbf7d0,#f0fdf4);">
+        <div style="width:48px;height:48px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/panthers/202605110452" alt="Panthers" style="width:48px;height:48px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:48px;height:48px;border-radius:8px;background:#000000;color:#FFFFFF;align-items:center;justify-content:center;font-size:13px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">PEN</div></div>
+        <div style="text-align:left;">
+          <div style="font-weight:800;color:#0f172a;font-size:17px;">Panthers</div>
+          <div style='font-size:11px;font-weight:800;color:#15803d;margin-top:2px;'>✓ WINNER</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;background:#dcfce7;border-top:1px solid rgba(0,0,0,0.05);padding:8px 16px;font-size:14px;font-weight:700;color:#166534;"><span style="font-size:18px;">✅</span><span>Model: Correct — Panthers (65.5%)</span></div>
+  </div>
+  <div style="margin-top:18px;padding:16px;background:#f8fafc;border-radius:10px;border:1px solid #e5e7eb;">
+    <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;color:#374151;margin-bottom:8px;">
+      <span>Round 10 accuracy</span>
+      <span style="color:#22c55e;">6/8 correct (75%)</span>
+    </div>
+    <div style="background:#e5e7eb;border-radius:999px;height:10px;overflow:hidden;">
+      <div style="background:#22c55e;width:75%;height:100%;border-radius:999px;"></div>
+    </div>
+    <div style="font-size:12px;color:#9ca3af;margin-top:6px;">Season benchmark: 62.4% on 2025 (213 matches)</div>
+  </div>
+</div>
+<div style="background:#eff6ff;border:1px solid #bfdbfe;padding:14px 18px;border-radius:12px;margin-bottom:24px;"><div style="font-size:14px;font-weight:800;color:#1e40af;margin-bottom:10px;">😴 Bye Round 11</div><div style="display:flex;flex-wrap:wrap;gap:8px;"><div style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.6);border-radius:999px;padding:4px 12px 4px 4px;border:1px solid #bfdbfe;"><div style="width:28px;height:28px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/raiders/202605110452" alt="Raiders" style="width:28px;height:28px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:28px;height:28px;border-radius:8px;background:#01B65C;color:#000000;align-items:center;justify-content:center;font-size:7px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">CAN</div></div><span style="font-weight:700;font-size:15px;color:#111827;">Raiders</span></div></div></div>
+<div class="card card-ladder">
+  <h2>🏆 Ladder — Top 8</h2>
+  <p class="section-intro">After Round 10. Green rows = top 8 finals position.</p>
+  <table>
+    <thead><tr>
+      <th>Pos</th><th>Team</th><th>P</th><th>W</th><th>L</th>
+      <th>Pts</th><th>Diff</th><th class="ladder-hide">Home</th><th class="ladder-hide">Away</th><th>Form</th>
+    </tr></thead><tbody>
+
+    <tr style="background:#f0fdf4;">
+      <td style="font-weight:bold;text-align:center;font-size:16px;">1</td>
+      <td style="font-weight:600;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/panthers/202605110452" alt="Panthers" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#000000;color:#FFFFFF;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">PEN</div></div><span style="font-size:15px;">Panthers</span></div></td>
+      <td style="text-align:center;">10</td>
+      <td style="text-align:center;">9</td>
+      <td style="text-align:center;">1</td>
+      <td style="text-align:center;font-weight:bold;font-size:16px;">18</td>
+      <td style="text-align:center;">181</td>
+      <td style="text-align:center;" class="ladder-hide">4/4</td>
+      <td style="text-align:center;" class="ladder-hide">5/6</td>
+      <td><span class="pill-l">L</span><span class="pill-w">W</span><span class="pill-w">W</span><span class="pill-w">W</span><span class="pill-w">W</span></td>
+    </tr>
+    <tr style="background:#f0fdf4;">
+      <td style="font-weight:bold;text-align:center;font-size:16px;">2</td>
+      <td style="font-weight:600;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/warriors/202605110452" alt="Warriors" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#0057A8;color:#00A550;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">NZL</div></div><span style="font-size:15px;">Warriors</span></div></td>
+      <td style="text-align:center;">9</td>
+      <td style="text-align:center;">7</td>
+      <td style="text-align:center;">2</td>
+      <td style="text-align:center;font-weight:bold;font-size:16px;">14</td>
+      <td style="text-align:center;">108</td>
+      <td style="text-align:center;" class="ladder-hide">4/5</td>
+      <td style="text-align:center;" class="ladder-hide">3/4</td>
+      <td><span class="pill-l">L</span><span class="pill-w">W</span><span class="pill-w">W</span><span class="pill-w">W</span><span class="pill-w">W</span></td>
+    </tr>
+    <tr style="background:#f0fdf4;">
+      <td style="font-weight:bold;text-align:center;font-size:16px;">3</td>
+      <td style="font-weight:600;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/roosters/202605110452" alt="Roosters" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#003087;color:#CC0000;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">SYD</div></div><span style="font-size:15px;">Roosters</span></div></td>
+      <td style="text-align:center;">9</td>
+      <td style="text-align:center;">7</td>
+      <td style="text-align:center;">2</td>
+      <td style="text-align:center;font-weight:bold;font-size:16px;">14</td>
+      <td style="text-align:center;">67</td>
+      <td style="text-align:center;" class="ladder-hide">4/5</td>
+      <td style="text-align:center;" class="ladder-hide">3/4</td>
+      <td><span class="pill-w">W</span><span class="pill-w">W</span><span class="pill-w">W</span><span class="pill-w">W</span><span class="pill-w">W</span></td>
+    </tr>
+    <tr style="background:#f0fdf4;">
+      <td style="font-weight:bold;text-align:center;font-size:16px;">4</td>
+      <td style="font-weight:600;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/rabbitohs/202605110452" alt="Rabbitohs" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#006A4E;color:#FF0000;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">SOU</div></div><span style="font-size:15px;">Rabbitohs</span></div></td>
+      <td style="text-align:center;">9</td>
+      <td style="text-align:center;">6</td>
+      <td style="text-align:center;">3</td>
+      <td style="text-align:center;font-weight:bold;font-size:16px;">12</td>
+      <td style="text-align:center;">92</td>
+      <td style="text-align:center;" class="ladder-hide">4/5</td>
+      <td style="text-align:center;" class="ladder-hide">2/4</td>
+      <td><span class="pill-l">L</span><span class="pill-w">W</span><span class="pill-w">W</span><span class="pill-l">L</span><span class="pill-w">W</span></td>
+    </tr>
+    <tr style="background:#f0fdf4;">
+      <td style="font-weight:bold;text-align:center;font-size:16px;">5</td>
+      <td style="font-weight:600;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/cowboys/202605110452" alt="Cowboys" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#003087;color:#FFD700;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">NQL</div></div><span style="font-size:15px;">Cowboys</span></div></td>
+      <td style="text-align:center;">10</td>
+      <td style="text-align:center;">6</td>
+      <td style="text-align:center;">4</td>
+      <td style="text-align:center;font-weight:bold;font-size:16px;">12</td>
+      <td style="text-align:center;">9</td>
+      <td style="text-align:center;" class="ladder-hide">3/5</td>
+      <td style="text-align:center;" class="ladder-hide">3/5</td>
+      <td><span class="pill-w">W</span><span class="pill-l">L</span><span class="pill-w">W</span><span class="pill-w">W</span><span class="pill-l">L</span></td>
+    </tr>
+    <tr style="background:#f0fdf4;">
+      <td style="font-weight:bold;text-align:center;font-size:16px;">6</td>
+      <td style="font-weight:600;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/knights/202605110452" alt="Knights" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#003B8E;color:#C0C0C0;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">NEW</div></div><span style="font-size:15px;">Knights</span></div></td>
+      <td style="text-align:center;">10</td>
+      <td style="text-align:center;">6</td>
+      <td style="text-align:center;">4</td>
+      <td style="text-align:center;font-weight:bold;font-size:16px;">12</td>
+      <td style="text-align:center;">4</td>
+      <td style="text-align:center;" class="ladder-hide">3/5</td>
+      <td style="text-align:center;" class="ladder-hide">3/5</td>
+      <td><span class="pill-l">L</span><span class="pill-l">L</span><span class="pill-l">L</span><span class="pill-w">W</span><span class="pill-w">W</span></td>
+    </tr>
+    <tr style="background:#f0fdf4;">
+      <td style="font-weight:bold;text-align:center;font-size:16px;">7</td>
+      <td style="font-weight:600;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/sea-eagles/202510300111" alt="Sea Eagles" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#6F263D;color:#FFFFFF;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">MNL</div></div><span style="font-size:15px;">Sea Eagles</span></div></td>
+      <td style="text-align:center;">9</td>
+      <td style="text-align:center;">5</td>
+      <td style="text-align:center;">4</td>
+      <td style="text-align:center;font-weight:bold;font-size:16px;">10</td>
+      <td style="text-align:center;">79</td>
+      <td style="text-align:center;" class="ladder-hide">2/5</td>
+      <td style="text-align:center;" class="ladder-hide">3/4</td>
+      <td><span class="pill-w">W</span><span class="pill-w">W</span><span class="pill-w">W</span><span class="pill-l">L</span><span class="pill-w">W</span></td>
+    </tr>
+    <tr style="background:#f0fdf4;">
+      <td style="font-weight:bold;text-align:center;font-size:16px;">8</td>
+      <td style="font-weight:600;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/wests-tigers/202605110452" alt="Wests Tigers" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#FF6600;color:#000000;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">WST</div></div><span style="font-size:15px;">Wests Tigers</span></div></td>
+      <td style="text-align:center;">9</td>
+      <td style="text-align:center;">5</td>
+      <td style="text-align:center;">4</td>
+      <td style="text-align:center;font-weight:bold;font-size:16px;">10</td>
+      <td style="text-align:center;">12</td>
+      <td style="text-align:center;" class="ladder-hide">3/4</td>
+      <td style="text-align:center;" class="ladder-hide">2/5</td>
+      <td><span class="pill-w">W</span><span class="pill-l">L</span><span class="pill-w">W</span><span class="pill-l">L</span><span class="pill-l">L</span></td>
+    </tr>
+  </tbody></table>
+</div>
+
+<div class="card card-traj">
+  <h2>📈 Team Trajectory — Last 4 Rounds</h2>
+  <p class="section-intro">Compares each team's last 4 games vs season average. Positive defence = conceding less recently.</p>
+  <table>
+    <thead><tr>
+      <th>Team</th>
+      <th style="text-align:center;">Status</th>
+      <th style="text-align:center;">Overall</th>
+      <th style="text-align:center;">Attack</th>
+      <th style="text-align:center;">Defence</th>
+      <th style="text-align:center;" class="traj-hide">Recent For</th>
+      <th style="text-align:center;" class="traj-hide">Recent Against</th>
+    </tr></thead><tbody>
+
+    <tr>
+      <td style="font-weight:600;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/roosters/202605110452" alt="Roosters" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#003087;color:#CC0000;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">SYD</div></div><span style="font-size:15px;">Roosters</span></div></td>
+      <td style="text-align:center;font-weight:700;font-size:15px;">🔥 Hot</td>
+      <td style="text-align:center;"><span style="background:#dcfce7;color:#166534;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;">+15.1</span></td>
+      <td style="text-align:center;" class="traj-up">+10.3</td>
+      <td style="text-align:center;" class="traj-up">+4.8</td>
+      <td style="text-align:center;" class="traj-hide">41.5</td>
+      <td style="text-align:center;" class="traj-hide">19.0</td>
+    </tr>
+    <tr>
+      <td style="font-weight:600;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/rabbitohs/202605110452" alt="Rabbitohs" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#006A4E;color:#FF0000;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">SOU</div></div><span style="font-size:15px;">Rabbitohs</span></div></td>
+      <td style="text-align:center;font-weight:700;font-size:15px;">🔥 Hot</td>
+      <td style="text-align:center;"><span style="background:#dcfce7;color:#166534;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;">+9.8</span></td>
+      <td style="text-align:center;" class="traj-up">+5.1</td>
+      <td style="text-align:center;" class="traj-up">+4.7</td>
+      <td style="text-align:center;" class="traj-hide">38.0</td>
+      <td style="text-align:center;" class="traj-hide">18.0</td>
+    </tr>
+    <tr>
+      <td style="font-weight:600;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/sea-eagles/202510300111" alt="Sea Eagles" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#6F263D;color:#FFFFFF;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">MNL</div></div><span style="font-size:15px;">Sea Eagles</span></div></td>
+      <td style="text-align:center;font-weight:700;font-size:15px;">🔥 Hot</td>
+      <td style="text-align:center;"><span style="background:#dcfce7;color:#166534;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;">+9.5</span></td>
+      <td style="text-align:center;" class="traj-nt">+1.0</td>
+      <td style="text-align:center;" class="traj-up">+8.5</td>
+      <td style="text-align:center;" class="traj-hide">29.8</td>
+      <td style="text-align:center;" class="traj-hide">11.5</td>
+    </tr>
+    <tr>
+      <td style="font-weight:600;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/dolphins/202605110452" alt="Dolphins" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#CC0000;color:#FFFFFF;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">DOL</div></div><span style="font-size:15px;">Dolphins</span></div></td>
+      <td style="text-align:center;font-weight:700;font-size:15px;">🔥 Hot</td>
+      <td style="text-align:center;"><span style="background:#dcfce7;color:#166534;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;">+9.4</span></td>
+      <td style="text-align:center;" class="traj-nt">+2.7</td>
+      <td style="text-align:center;" class="traj-up">+6.8</td>
+      <td style="text-align:center;" class="traj-hide">28.0</td>
+      <td style="text-align:center;" class="traj-hide">16.2</td>
+    </tr>
+    <tr>
+      <td style="font-weight:600;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/eels/202605110452" alt="Eels" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#0033CC;color:#FFD700;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">PAR</div></div><span style="font-size:15px;">Eels</span></div></td>
+      <td style="text-align:center;font-weight:700;font-size:15px;">📈 Rising</td>
+      <td style="text-align:center;"><span style="background:#dcfce7;color:#166534;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;">+7.8</span></td>
+      <td style="text-align:center;" class="traj-up">+3.1</td>
+      <td style="text-align:center;" class="traj-up">+4.8</td>
+      <td style="text-align:center;" class="traj-hide">25.8</td>
+      <td style="text-align:center;" class="traj-hide">29.8</td>
+    </tr>
+    <tr>
+      <td style="font-weight:600;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/titans/202605110452" alt="Titans" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#009FDF;color:#000000;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">GCT</div></div><span style="font-size:15px;">Titans</span></div></td>
+      <td style="text-align:center;font-weight:700;font-size:15px;">📈 Rising</td>
+      <td style="text-align:center;"><span style="background:#dcfce7;color:#166534;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;">+7.4</span></td>
+      <td style="text-align:center;" class="traj-up">+5.1</td>
+      <td style="text-align:center;" class="traj-nt">+2.3</td>
+      <td style="text-align:center;" class="traj-hide">24.0</td>
+      <td style="text-align:center;" class="traj-hide">23.5</td>
+    </tr>
+    <tr>
+      <td style="font-weight:600;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/raiders/202605110452" alt="Raiders" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#01B65C;color:#000000;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">CAN</div></div><span style="font-size:15px;">Raiders</span></div></td>
+      <td style="text-align:center;font-weight:700;font-size:15px;">📈 Rising</td>
+      <td style="text-align:center;"><span style="background:#dcfce7;color:#166534;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;">+5.0</span></td>
+      <td style="text-align:center;" class="traj-nt">+1.4</td>
+      <td style="text-align:center;" class="traj-up">+3.6</td>
+      <td style="text-align:center;" class="traj-hide">21.5</td>
+      <td style="text-align:center;" class="traj-hide">24.2</td>
+    </tr>
+    <tr>
+      <td style="font-weight:600;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/warriors/202605110452" alt="Warriors" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#0057A8;color:#00A550;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">NZL</div></div><span style="font-size:15px;">Warriors</span></div></td>
+      <td style="text-align:center;font-weight:700;font-size:15px;">➡️ Stable</td>
+      <td style="text-align:center;"><span style="background:#f3f4f6;color:#374151;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;">+2.0</span></td>
+      <td style="text-align:center;" class="traj-nt">-0.4</td>
+      <td style="text-align:center;" class="traj-nt">+2.4</td>
+      <td style="text-align:center;" class="traj-hide">30.5</td>
+      <td style="text-align:center;" class="traj-hide">16.5</td>
+    </tr>
+    <tr>
+      <td style="font-weight:600;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/knights/202605110452" alt="Knights" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#003B8E;color:#C0C0C0;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">NEW</div></div><span style="font-size:15px;">Knights</span></div></td>
+      <td style="text-align:center;font-weight:700;font-size:15px;">➡️ Stable</td>
+      <td style="text-align:center;"><span style="background:#f3f4f6;color:#374151;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;">-2.4</span></td>
+      <td style="text-align:center;" class="traj-nt">+2.9</td>
+      <td style="text-align:center;" class="traj-dn">-5.3</td>
+      <td style="text-align:center;" class="traj-hide">30.5</td>
+      <td style="text-align:center;" class="traj-hide">32.5</td>
+    </tr>
+    <tr>
+      <td style="font-weight:600;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/broncos/202603200353" alt="Broncos" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#800000;color:#FFD700;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">BRO</div></div><span style="font-size:15px;">Broncos</span></div></td>
+      <td style="text-align:center;font-weight:700;font-size:15px;">➡️ Stable</td>
+      <td style="text-align:center;"><span style="background:#f3f4f6;color:#374151;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;">-2.5</span></td>
+      <td style="text-align:center;" class="traj-nt">-1.1</td>
+      <td style="text-align:center;" class="traj-nt">-1.4</td>
+      <td style="text-align:center;" class="traj-hide">20.2</td>
+      <td style="text-align:center;" class="traj-hide">25.5</td>
+    </tr>
+    <tr>
+      <td style="font-weight:600;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/cowboys/202605110452" alt="Cowboys" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#003087;color:#FFD700;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">NQL</div></div><span style="font-size:15px;">Cowboys</span></div></td>
+      <td style="text-align:center;font-weight:700;font-size:15px;">➡️ Stable</td>
+      <td style="text-align:center;"><span style="background:#f3f4f6;color:#374151;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;">-2.6</span></td>
+      <td style="text-align:center;" class="traj-nt">+0.6</td>
+      <td style="text-align:center;" class="traj-dn">-3.2</td>
+      <td style="text-align:center;" class="traj-hide">27.5</td>
+      <td style="text-align:center;" class="traj-hide">29.2</td>
+    </tr>
+    <tr>
+      <td style="font-weight:600;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/sharks/202605110452" alt="Sharks" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#00AEEF;color:#000000;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">CRO</div></div><span style="font-size:15px;">Sharks</span></div></td>
+      <td style="text-align:center;font-weight:700;font-size:15px;">➡️ Stable</td>
+      <td style="text-align:center;"><span style="background:#f3f4f6;color:#374151;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;">-2.8</span></td>
+      <td style="text-align:center;" class="traj-nt">+1.6</td>
+      <td style="text-align:center;" class="traj-dn">-4.4</td>
+      <td style="text-align:center;" class="traj-hide">30.0</td>
+      <td style="text-align:center;" class="traj-hide">31.5</td>
+    </tr>
+    <tr>
+      <td style="font-weight:600;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/storm/202605110452" alt="Storm" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#4F2D7F;color:#FFFFFF;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">MEL</div></div><span style="font-size:15px;">Storm</span></div></td>
+      <td style="text-align:center;font-weight:700;font-size:15px;">📉 Fading</td>
+      <td style="text-align:center;"><span style="background:#fee2e2;color:#991b1b;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;">-5.6</span></td>
+      <td style="text-align:center;" class="traj-dn">-3.7</td>
+      <td style="text-align:center;" class="traj-nt">-1.9</td>
+      <td style="text-align:center;" class="traj-hide">20.5</td>
+      <td style="text-align:center;" class="traj-hide">29.5</td>
+    </tr>
+    <tr>
+      <td style="font-weight:600;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/dragons/202602250432" alt="Dragons" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#442400;color:#CC0000;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">SGI</div></div><span style="font-size:15px;">Dragons</span></div></td>
+      <td style="text-align:center;font-weight:700;font-size:15px;">📉 Fading</td>
+      <td style="text-align:center;"><span style="background:#fee2e2;color:#991b1b;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;">-6.4</span></td>
+      <td style="text-align:center;" class="traj-nt">+0.2</td>
+      <td style="text-align:center;" class="traj-dn">-6.7</td>
+      <td style="text-align:center;" class="traj-hide">14.0</td>
+      <td style="text-align:center;" class="traj-hide">41.0</td>
+    </tr>
+    <tr>
+      <td style="font-weight:600;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/panthers/202605110452" alt="Panthers" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#000000;color:#FFFFFF;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">PEN</div></div><span style="font-size:15px;">Panthers</span></div></td>
+      <td style="text-align:center;font-weight:700;font-size:15px;">📉 Fading</td>
+      <td style="text-align:center;"><span style="background:#fee2e2;color:#991b1b;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;">-6.4</span></td>
+      <td style="text-align:center;" class="traj-dn">-3.4</td>
+      <td style="text-align:center;" class="traj-nt">-3.0</td>
+      <td style="text-align:center;" class="traj-hide">28.8</td>
+      <td style="text-align:center;" class="traj-hide">17.0</td>
+    </tr>
+    <tr>
+      <td style="font-weight:600;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/bulldogs/202510310458" alt="Bulldogs" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#0033A0;color:#FFFFFF;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">BUL</div></div><span style="font-size:15px;">Bulldogs</span></div></td>
+      <td style="text-align:center;font-weight:700;font-size:15px;">❄️ Cold</td>
+      <td style="text-align:center;"><span style="background:#fee2e2;color:#991b1b;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;">-12.5</span></td>
+      <td style="text-align:center;" class="traj-dn">-3.4</td>
+      <td style="text-align:center;" class="traj-dn">-9.1</td>
+      <td style="text-align:center;" class="traj-hide">14.0</td>
+      <td style="text-align:center;" class="traj-hide">35.5</td>
+    </tr>
+    <tr>
+      <td style="font-weight:600;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/wests-tigers/202605110452" alt="Wests Tigers" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#FF6600;color:#000000;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">WST</div></div><span style="font-size:15px;">Wests Tigers</span></div></td>
+      <td style="text-align:center;font-weight:700;font-size:15px;">❄️ Cold</td>
+      <td style="text-align:center;"><span style="background:#fee2e2;color:#991b1b;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;">-14.3</span></td>
+      <td style="text-align:center;" class="traj-dn">-6.4</td>
+      <td style="text-align:center;" class="traj-dn">-8.0</td>
+      <td style="text-align:center;" class="traj-hide">19.8</td>
+      <td style="text-align:center;" class="traj-hide">32.8</td>
+    </tr>
+  </tbody></table>
+</div>
+
+<div class="card card-odds">
+  <h2>🎲 Round 11 — Sportsbet Odds</h2>
+  <p class="section-intro">Current head-to-head odds. ⭐ = market favourite. TBA = not yet published.</p>
+  <table>
+    <thead><tr>
+      <th class="odds-hide">Date</th><th>Home</th>
+      <th style="text-align:center;">Home Odds</th>
+      <th style="text-align:center;">Away Odds</th>
+      <th>Away</th><th style="text-align:center;">Favourite</th>
+    </tr></thead><tbody>
+
+      <tr>
+        <td style="font-size:13px;color:#475569;" class="odds-hide">2026-05-15</td>
+        <td><div style="display:flex;align-items:center;gap:8px;font-weight:800;color:#0f172a;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/sharks/202605110452" alt="Sharks" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#00AEEF;color:#000000;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">CRO</div></div><span style="font-size:15px;">Sharks</span></div></td>
+        <td style="text-align:center;"><span style="background:#fef3c7;padding:6px 14px;border-radius:999px;font-weight:800;font-size:14px;">$1.51</span></td>
+        <td style="text-align:center;"><span style="background:#f8fafc;padding:6px 14px;border-radius:999px;font-weight:800;font-size:14px;">$2.56</span></td>
+        <td><div style="display:flex;align-items:center;gap:8px;font-weight:500;color:#64748b;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/bulldogs/202510310458" alt="Bulldogs" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#0033A0;color:#FFFFFF;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">BUL</div></div><span style="font-size:15px;">Bulldogs</span></div></td>
+        <td style="text-align:center;"><span class="badge badge-yellow">⭐ Sharks</span></td>
+      </tr>
+      <tr>
+        <td style="font-size:13px;color:#475569;" class="odds-hide">2026-05-15</td>
+        <td><div style="display:flex;align-items:center;gap:8px;font-weight:500;color:#64748b;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/rabbitohs/202605110452" alt="Rabbitohs" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#006A4E;color:#FF0000;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">SOU</div></div><span style="font-size:15px;">Rabbitohs</span></div></td>
+        <td style="text-align:center;"><span style="background:#f8fafc;padding:6px 14px;border-radius:999px;font-weight:800;font-size:14px;">$1.98</span></td>
+        <td style="text-align:center;"><span style="background:#fef3c7;padding:6px 14px;border-radius:999px;font-weight:800;font-size:14px;">$1.86</span></td>
+        <td><div style="display:flex;align-items:center;gap:8px;font-weight:800;color:#0f172a;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/dolphins/202605110452" alt="Dolphins" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#CC0000;color:#FFFFFF;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">DOL</div></div><span style="font-size:15px;">Dolphins</span></div></td>
+        <td style="text-align:center;"><span class="badge badge-yellow">⭐ Dolphins</span></td>
+      </tr>
+      <tr>
+        <td style="font-size:13px;color:#475569;" class="odds-hide">2026-05-16</td>
+        <td><div style="display:flex;align-items:center;gap:8px;font-weight:500;color:#64748b;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/wests-tigers/202605110452" alt="Wests Tigers" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#FF6600;color:#000000;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">WST</div></div><span style="font-size:15px;">Wests Tigers</span></div></td>
+        <td style="text-align:center;"><span style="background:#f8fafc;padding:6px 14px;border-radius:999px;font-weight:800;font-size:14px;">$3.12</span></td>
+        <td style="text-align:center;"><span style="background:#fef3c7;padding:6px 14px;border-radius:999px;font-weight:800;font-size:14px;">$1.37</span></td>
+        <td><div style="display:flex;align-items:center;gap:8px;font-weight:800;color:#0f172a;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/sea-eagles/202510300111" alt="Sea Eagles" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#6F263D;color:#FFFFFF;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">MNL</div></div><span style="font-size:15px;">Sea Eagles</span></div></td>
+        <td style="text-align:center;"><span class="badge badge-yellow">⭐ Sea Eagles</span></td>
+      </tr>
+      <tr>
+        <td style="font-size:13px;color:#475569;" class="odds-hide">2026-05-16</td>
+        <td><div style="display:flex;align-items:center;gap:8px;font-weight:800;color:#0f172a;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/roosters/202605110452" alt="Roosters" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#003087;color:#CC0000;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">SYD</div></div><span style="font-size:15px;">Roosters</span></div></td>
+        <td style="text-align:center;"><span style="background:#fef3c7;padding:6px 14px;border-radius:999px;font-weight:800;font-size:14px;">$1.19</span></td>
+        <td style="text-align:center;"><span style="background:#f8fafc;padding:6px 14px;border-radius:999px;font-weight:800;font-size:14px;">$4.70</span></td>
+        <td><div style="display:flex;align-items:center;gap:8px;font-weight:500;color:#64748b;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/cowboys/202605110452" alt="Cowboys" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#003087;color:#FFD700;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">NQL</div></div><span style="font-size:15px;">Cowboys</span></div></td>
+        <td style="text-align:center;"><span class="badge badge-yellow">⭐ Roosters</span></td>
+      </tr>
+      <tr>
+        <td style="font-size:13px;color:#475569;" class="odds-hide">2026-05-16</td>
+        <td><div style="display:flex;align-items:center;gap:8px;font-weight:500;color:#64748b;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/eels/202605110452" alt="Eels" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#0033CC;color:#FFD700;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">PAR</div></div><span style="font-size:15px;">Eels</span></div></td>
+        <td style="text-align:center;"><span style="background:#f8fafc;padding:6px 14px;border-radius:999px;font-weight:800;font-size:14px;">$3.12</span></td>
+        <td style="text-align:center;"><span style="background:#fef3c7;padding:6px 14px;border-radius:999px;font-weight:800;font-size:14px;">$1.37</span></td>
+        <td><div style="display:flex;align-items:center;gap:8px;font-weight:800;color:#0f172a;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/storm/202605110452" alt="Storm" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#4F2D7F;color:#FFFFFF;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">MEL</div></div><span style="font-size:15px;">Storm</span></div></td>
+        <td style="text-align:center;"><span class="badge badge-yellow">⭐ Storm</span></td>
+      </tr>
+      <tr>
+        <td style="font-size:13px;color:#475569;" class="odds-hide">2026-05-17</td>
+        <td><div style="display:flex;align-items:center;gap:8px;font-weight:500;color:#64748b;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/titans/202605110452" alt="Titans" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#009FDF;color:#000000;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">GCT</div></div><span style="font-size:15px;">Titans</span></div></td>
+        <td style="text-align:center;"><span style="background:#f8fafc;padding:6px 14px;border-radius:999px;font-weight:800;font-size:14px;">$3.28</span></td>
+        <td style="text-align:center;"><span style="background:#fef3c7;padding:6px 14px;border-radius:999px;font-weight:800;font-size:14px;">$1.34</span></td>
+        <td><div style="display:flex;align-items:center;gap:8px;font-weight:800;color:#0f172a;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/knights/202605110452" alt="Knights" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#003B8E;color:#C0C0C0;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">NEW</div></div><span style="font-size:15px;">Knights</span></div></td>
+        <td style="text-align:center;"><span class="badge badge-yellow">⭐ Knights</span></td>
+      </tr>
+      <tr>
+        <td style="font-size:13px;color:#475569;" class="odds-hide">2026-05-17</td>
+        <td><div style="display:flex;align-items:center;gap:8px;font-weight:800;color:#0f172a;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/warriors/202605110452" alt="Warriors" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#0057A8;color:#00A550;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">NZL</div></div><span style="font-size:15px;">Warriors</span></div></td>
+        <td style="text-align:center;"><span style="background:#fef3c7;padding:6px 14px;border-radius:999px;font-weight:800;font-size:14px;">$1.69</span></td>
+        <td style="text-align:center;"><span style="background:#f8fafc;padding:6px 14px;border-radius:999px;font-weight:800;font-size:14px;">$2.17</span></td>
+        <td><div style="display:flex;align-items:center;gap:8px;font-weight:500;color:#64748b;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/broncos/202603200353" alt="Broncos" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#800000;color:#FFD700;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">BRO</div></div><span style="font-size:15px;">Broncos</span></div></td>
+        <td style="text-align:center;"><span class="badge badge-yellow">⭐ Warriors</span></td>
+      </tr>
+      <tr>
+        <td style="font-size:13px;color:#475569;" class="odds-hide">2026-05-17</td>
+        <td><div style="display:flex;align-items:center;gap:8px;font-weight:800;color:#0f172a;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/panthers/202605110452" alt="Panthers" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#000000;color:#FFFFFF;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">PEN</div></div><span style="font-size:15px;">Panthers</span></div></td>
+        <td style="text-align:center;"><span style="background:#fef3c7;padding:6px 14px;border-radius:999px;font-weight:800;font-size:14px;">$1.04</span></td>
+        <td style="text-align:center;"><span style="background:#f8fafc;padding:6px 14px;border-radius:999px;font-weight:800;font-size:14px;">$11.50</span></td>
+        <td><div style="display:flex;align-items:center;gap:8px;font-weight:500;color:#64748b;"><div style="width:32px;height:32px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/dragons/202602250432" alt="Dragons" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:32px;height:32px;border-radius:8px;background:#442400;color:#CC0000;align-items:center;justify-content:center;font-size:8px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">SGI</div></div><span style="font-size:15px;">Dragons</span></div></td>
+        <td style="text-align:center;"><span class="badge badge-yellow">⭐ Panthers</span></td>
+      </tr>
+  </tbody></table>
+</div>
+
+<div class="card card-model">
+  <h2>🤖 Round 11 — Our Model vs Sportsbet</h2>
+  <p class="section-intro">
+    Logistic regression trained on 2021–2024 NRL data. <strong>62.4% accuracy</strong> on 2025 (213 matches).<br>
+    👀 Value bet = Sportsbet offering $0.20+ more than our model's fair value. 🎲 Toss-up = model within 10% of 50/50.
+  </p>
+<div style="display:flex;flex-direction:column;gap:16px;margin-top:14px;">
+    <div style="border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(15,23,42,0.08);border:1px solid #bbf7d0;">
+      <div class="pred-header" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);padding:16px 22px;border-bottom:2px solid #bbf7d0;display:grid;grid-template-columns:1fr 180px 1fr;align-items:center;gap:12px;">
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:12px;">
+          <span style="font-weight:800;color:#0f172a;font-size:17px;text-align:right;">Sharks</span><div style="width:42px;height:42px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/sharks/202605110452" alt="Sharks" style="width:42px;height:42px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:42px;height:42px;border-radius:8px;background:#00AEEF;color:#000000;align-items:center;justify-content:center;font-size:11px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">CRO</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <span style="color:#94a3b8;font-size:10px;font-weight:900;letter-spacing:2px;">VS</span>
+          <span style="background:#dcfce7;color:#166534;padding:6px 16px;border-radius:999px;font-size:13px;font-weight:900;white-space:nowrap;border:1px solid #bbf7d0;">71.3% · Strong</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:flex-start;gap:12px;">
+          <div style="width:42px;height:42px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/bulldogs/202510310458" alt="Bulldogs" style="width:42px;height:42px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:42px;height:42px;border-radius:8px;background:#0033A0;color:#FFFFFF;align-items:center;justify-content:center;font-size:11px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">BUL</div></div><span style="font-weight:800;color:#0f172a;font-size:17px;">Bulldogs</span>
+        </div>
+      </div>
+      <div class="pred-stats" style="display:grid;grid-template-columns:1fr 1fr 1fr 1.4fr;background:#fff;align-items:stretch;">
+        <div style="padding:16px 18px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Our Pick</div>
+          <div style="font-weight:900;color:#1e3a8a;background:#eef2ff;display:inline-block;padding:6px 14px;border-radius:8px;font-size:14px;align-self:flex-start;">Sharks</div>
+        </div>
+        <div style="padding:16px 18px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Our Odds</div>
+          <div style="font-weight:800;color:#0f172a;font-size:16px;font-variant-numeric:tabular-nums;">$1.40 / $3.48</div>
+        </div>
+        <div style="padding:16px 18px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Sportsbet</div>
+          <div style="font-weight:800;color:#0f172a;font-size:16px;font-variant-numeric:tabular-nums;">$1.51 / $2.56</div>
+        </div>
+        <div style="padding:16px 18px;background:#fafafa;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Signal</div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div style="color:#9ca3af;font-size:14px;padding:4px 0;">—</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(15,23,42,0.08);border:1px solid #fca5a5;">
+      <div class="pred-header" style="background:linear-gradient(135deg,#fff5f5,#fee2e2);padding:16px 22px;border-bottom:2px solid #fca5a5;display:grid;grid-template-columns:1fr 180px 1fr;align-items:center;gap:12px;">
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:12px;">
+          <span style="font-weight:800;color:#0f172a;font-size:17px;text-align:right;">Rabbitohs</span><div style="width:42px;height:42px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/rabbitohs/202605110452" alt="Rabbitohs" style="width:42px;height:42px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:42px;height:42px;border-radius:8px;background:#006A4E;color:#FF0000;align-items:center;justify-content:center;font-size:11px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">SOU</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <span style="color:#94a3b8;font-size:10px;font-weight:900;letter-spacing:2px;">VS</span>
+          <span style="background:#fee2e2;color:#991b1b;padding:6px 16px;border-radius:999px;font-size:13px;font-weight:900;white-space:nowrap;border:1px solid #fca5a5;">59.1% · Low</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:flex-start;gap:12px;">
+          <div style="width:42px;height:42px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/dolphins/202605110452" alt="Dolphins" style="width:42px;height:42px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:42px;height:42px;border-radius:8px;background:#CC0000;color:#FFFFFF;align-items:center;justify-content:center;font-size:11px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">DOL</div></div><span style="font-weight:800;color:#0f172a;font-size:17px;">Dolphins</span>
+        </div>
+      </div>
+      <div class="pred-stats" style="display:grid;grid-template-columns:1fr 1fr 1fr 1.4fr;background:#fff;align-items:stretch;">
+        <div style="padding:16px 18px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Our Pick</div>
+          <div style="font-weight:900;color:#1e3a8a;background:#eef2ff;display:inline-block;padding:6px 14px;border-radius:8px;font-size:14px;align-self:flex-start;">Rabbitohs</div>
+        </div>
+        <div style="padding:16px 18px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Our Odds</div>
+          <div style="font-weight:800;color:#0f172a;font-size:16px;font-variant-numeric:tabular-nums;">$1.69 / $2.44</div>
+        </div>
+        <div style="padding:16px 18px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Sportsbet</div>
+          <div style="font-weight:800;color:#0f172a;font-size:16px;font-variant-numeric:tabular-nums;">$1.98 / $1.86</div>
+        </div>
+        <div style="padding:16px 18px;background:#fafafa;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Signal</div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div style="background:#dbeafe;color:#1e40af;padding:9px 14px;border-radius:8px;font-size:13px;font-weight:800;line-height:1.4;border:1px solid #bfdbfe;">👀 VALUE<br><span style="font-size:14px;">Rabbitohs +$0.29</span></div>
+<div style="background:#f3e8ff;color:#6b21a8;padding:9px 14px;border-radius:8px;font-size:13px;font-weight:800;border:1px solid #d8b4fe;">🎲 Toss-up</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(15,23,42,0.08);border:1px solid #fca5a5;">
+      <div class="pred-header" style="background:linear-gradient(135deg,#fff5f5,#fee2e2);padding:16px 22px;border-bottom:2px solid #fca5a5;display:grid;grid-template-columns:1fr 180px 1fr;align-items:center;gap:12px;">
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:12px;">
+          <span style="font-weight:800;color:#0f172a;font-size:17px;text-align:right;">Wests Tigers</span><div style="width:42px;height:42px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/wests-tigers/202605110452" alt="Wests Tigers" style="width:42px;height:42px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:42px;height:42px;border-radius:8px;background:#FF6600;color:#000000;align-items:center;justify-content:center;font-size:11px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">WST</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <span style="color:#94a3b8;font-size:10px;font-weight:900;letter-spacing:2px;">VS</span>
+          <span style="background:#fee2e2;color:#991b1b;padding:6px 16px;border-radius:999px;font-size:13px;font-weight:900;white-space:nowrap;border:1px solid #fca5a5;">53.1% · Low</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:flex-start;gap:12px;">
+          <div style="width:42px;height:42px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/sea-eagles/202510300111" alt="Sea Eagles" style="width:42px;height:42px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:42px;height:42px;border-radius:8px;background:#6F263D;color:#FFFFFF;align-items:center;justify-content:center;font-size:11px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">MNL</div></div><span style="font-weight:800;color:#0f172a;font-size:17px;">Sea Eagles</span>
+        </div>
+      </div>
+      <div class="pred-stats" style="display:grid;grid-template-columns:1fr 1fr 1fr 1.4fr;background:#fff;align-items:stretch;">
+        <div style="padding:16px 18px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Our Pick</div>
+          <div style="font-weight:900;color:#1e3a8a;background:#eef2ff;display:inline-block;padding:6px 14px;border-radius:8px;font-size:14px;align-self:flex-start;">Sea Eagles</div>
+        </div>
+        <div style="padding:16px 18px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Our Odds</div>
+          <div style="font-weight:800;color:#0f172a;font-size:16px;font-variant-numeric:tabular-nums;">$2.13 / $1.88</div>
+        </div>
+        <div style="padding:16px 18px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Sportsbet</div>
+          <div style="font-weight:800;color:#0f172a;font-size:16px;font-variant-numeric:tabular-nums;">$3.12 / $1.37</div>
+        </div>
+        <div style="padding:16px 18px;background:#fafafa;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Signal</div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div style="background:#dbeafe;color:#1e40af;padding:9px 14px;border-radius:8px;font-size:13px;font-weight:800;line-height:1.4;border:1px solid #bfdbfe;">👀 VALUE<br><span style="font-size:14px;">Wests Tigers +$0.99</span></div>
+<div style="background:#f3e8ff;color:#6b21a8;padding:9px 14px;border-radius:8px;font-size:13px;font-weight:800;border:1px solid #d8b4fe;">🎲 Toss-up</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(15,23,42,0.08);border:1px solid #fde047;">
+      <div class="pred-header" style="background:linear-gradient(135deg,#fefce8,#fef9c3);padding:16px 22px;border-bottom:2px solid #fde047;display:grid;grid-template-columns:1fr 180px 1fr;align-items:center;gap:12px;">
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:12px;">
+          <span style="font-weight:800;color:#0f172a;font-size:17px;text-align:right;">Roosters</span><div style="width:42px;height:42px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/roosters/202605110452" alt="Roosters" style="width:42px;height:42px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:42px;height:42px;border-radius:8px;background:#003087;color:#CC0000;align-items:center;justify-content:center;font-size:11px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">SYD</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <span style="color:#94a3b8;font-size:10px;font-weight:900;letter-spacing:2px;">VS</span>
+          <span style="background:#fef9c3;color:#854d0e;padding:6px 16px;border-radius:999px;font-size:13px;font-weight:900;white-space:nowrap;border:1px solid #fde047;">67.7% · Medium</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:flex-start;gap:12px;">
+          <div style="width:42px;height:42px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/cowboys/202605110452" alt="Cowboys" style="width:42px;height:42px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:42px;height:42px;border-radius:8px;background:#003087;color:#FFD700;align-items:center;justify-content:center;font-size:11px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">NQL</div></div><span style="font-weight:800;color:#0f172a;font-size:17px;">Cowboys</span>
+        </div>
+      </div>
+      <div class="pred-stats" style="display:grid;grid-template-columns:1fr 1fr 1fr 1.4fr;background:#fff;align-items:stretch;">
+        <div style="padding:16px 18px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Our Pick</div>
+          <div style="font-weight:900;color:#1e3a8a;background:#eef2ff;display:inline-block;padding:6px 14px;border-radius:8px;font-size:14px;align-self:flex-start;">Roosters</div>
+        </div>
+        <div style="padding:16px 18px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Our Odds</div>
+          <div style="font-weight:800;color:#0f172a;font-size:16px;font-variant-numeric:tabular-nums;">$1.48 / $3.10</div>
+        </div>
+        <div style="padding:16px 18px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Sportsbet</div>
+          <div style="font-weight:800;color:#0f172a;font-size:16px;font-variant-numeric:tabular-nums;">$1.19 / $4.70</div>
+        </div>
+        <div style="padding:16px 18px;background:#fafafa;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Signal</div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div style="background:#dbeafe;color:#1e40af;padding:9px 14px;border-radius:8px;font-size:13px;font-weight:800;line-height:1.4;border:1px solid #bfdbfe;">👀 VALUE<br><span style="font-size:14px;">Cowboys +$1.60</span></div></div>
+        </div>
+      </div>
+    </div>
+    <div style="border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(15,23,42,0.08);border:1px solid #fde047;">
+      <div class="pred-header" style="background:linear-gradient(135deg,#fefce8,#fef9c3);padding:16px 22px;border-bottom:2px solid #fde047;display:grid;grid-template-columns:1fr 180px 1fr;align-items:center;gap:12px;">
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:12px;">
+          <span style="font-weight:800;color:#0f172a;font-size:17px;text-align:right;">Eels</span><div style="width:42px;height:42px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/eels/202605110452" alt="Eels" style="width:42px;height:42px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:42px;height:42px;border-radius:8px;background:#0033CC;color:#FFD700;align-items:center;justify-content:center;font-size:11px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">PAR</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <span style="color:#94a3b8;font-size:10px;font-weight:900;letter-spacing:2px;">VS</span>
+          <span style="background:#fef9c3;color:#854d0e;padding:6px 16px;border-radius:999px;font-size:13px;font-weight:900;white-space:nowrap;border:1px solid #fde047;">60.0% · Medium</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:flex-start;gap:12px;">
+          <div style="width:42px;height:42px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/storm/202605110452" alt="Storm" style="width:42px;height:42px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:42px;height:42px;border-radius:8px;background:#4F2D7F;color:#FFFFFF;align-items:center;justify-content:center;font-size:11px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">MEL</div></div><span style="font-weight:800;color:#0f172a;font-size:17px;">Storm</span>
+        </div>
+      </div>
+      <div class="pred-stats" style="display:grid;grid-template-columns:1fr 1fr 1fr 1.4fr;background:#fff;align-items:stretch;">
+        <div style="padding:16px 18px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Our Pick</div>
+          <div style="font-weight:900;color:#1e3a8a;background:#eef2ff;display:inline-block;padding:6px 14px;border-radius:8px;font-size:14px;align-self:flex-start;">Storm</div>
+        </div>
+        <div style="padding:16px 18px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Our Odds</div>
+          <div style="font-weight:800;color:#0f172a;font-size:16px;font-variant-numeric:tabular-nums;">$2.50 / $1.67</div>
+        </div>
+        <div style="padding:16px 18px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Sportsbet</div>
+          <div style="font-weight:800;color:#0f172a;font-size:16px;font-variant-numeric:tabular-nums;">$3.12 / $1.37</div>
+        </div>
+        <div style="padding:16px 18px;background:#fafafa;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Signal</div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div style="background:#dbeafe;color:#1e40af;padding:9px 14px;border-radius:8px;font-size:13px;font-weight:800;line-height:1.4;border:1px solid #bfdbfe;">👀 VALUE<br><span style="font-size:14px;">Eels +$0.62</span></div>
+<div style="background:#f3e8ff;color:#6b21a8;padding:9px 14px;border-radius:8px;font-size:13px;font-weight:800;border:1px solid #d8b4fe;">🎲 Toss-up</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(15,23,42,0.08);border:1px solid #fde047;">
+      <div class="pred-header" style="background:linear-gradient(135deg,#fefce8,#fef9c3);padding:16px 22px;border-bottom:2px solid #fde047;display:grid;grid-template-columns:1fr 180px 1fr;align-items:center;gap:12px;">
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:12px;">
+          <span style="font-weight:800;color:#0f172a;font-size:17px;text-align:right;">Titans</span><div style="width:42px;height:42px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/titans/202605110452" alt="Titans" style="width:42px;height:42px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:42px;height:42px;border-radius:8px;background:#009FDF;color:#000000;align-items:center;justify-content:center;font-size:11px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">GCT</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <span style="color:#94a3b8;font-size:10px;font-weight:900;letter-spacing:2px;">VS</span>
+          <span style="background:#fef9c3;color:#854d0e;padding:6px 16px;border-radius:999px;font-size:13px;font-weight:900;white-space:nowrap;border:1px solid #fde047;">63.5% · Medium</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:flex-start;gap:12px;">
+          <div style="width:42px;height:42px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/knights/202605110452" alt="Knights" style="width:42px;height:42px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:42px;height:42px;border-radius:8px;background:#003B8E;color:#C0C0C0;align-items:center;justify-content:center;font-size:11px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">NEW</div></div><span style="font-weight:800;color:#0f172a;font-size:17px;">Knights</span>
+        </div>
+      </div>
+      <div class="pred-stats" style="display:grid;grid-template-columns:1fr 1fr 1fr 1.4fr;background:#fff;align-items:stretch;">
+        <div style="padding:16px 18px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Our Pick</div>
+          <div style="font-weight:900;color:#1e3a8a;background:#eef2ff;display:inline-block;padding:6px 14px;border-radius:8px;font-size:14px;align-self:flex-start;">Titans</div>
+        </div>
+        <div style="padding:16px 18px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Our Odds</div>
+          <div style="font-weight:800;color:#0f172a;font-size:16px;font-variant-numeric:tabular-nums;">$1.57 / $2.74</div>
+        </div>
+        <div style="padding:16px 18px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Sportsbet</div>
+          <div style="font-weight:800;color:#0f172a;font-size:16px;font-variant-numeric:tabular-nums;">$3.28 / $1.34</div>
+        </div>
+        <div style="padding:16px 18px;background:#fafafa;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Signal</div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div style="background:#dbeafe;color:#1e40af;padding:9px 14px;border-radius:8px;font-size:13px;font-weight:800;line-height:1.4;border:1px solid #bfdbfe;">👀 VALUE<br><span style="font-size:14px;">Titans +$1.71</span></div></div>
+        </div>
+      </div>
+    </div>
+    <div style="border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(15,23,42,0.08);border:1px solid #fde047;">
+      <div class="pred-header" style="background:linear-gradient(135deg,#fefce8,#fef9c3);padding:16px 22px;border-bottom:2px solid #fde047;display:grid;grid-template-columns:1fr 180px 1fr;align-items:center;gap:12px;">
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:12px;">
+          <span style="font-weight:800;color:#0f172a;font-size:17px;text-align:right;">Warriors</span><div style="width:42px;height:42px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/warriors/202605110452" alt="Warriors" style="width:42px;height:42px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:42px;height:42px;border-radius:8px;background:#0057A8;color:#00A550;align-items:center;justify-content:center;font-size:11px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">NZL</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <span style="color:#94a3b8;font-size:10px;font-weight:900;letter-spacing:2px;">VS</span>
+          <span style="background:#fef9c3;color:#854d0e;padding:6px 16px;border-radius:999px;font-size:13px;font-weight:900;white-space:nowrap;border:1px solid #fde047;">63.6% · Medium</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:flex-start;gap:12px;">
+          <div style="width:42px;height:42px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/broncos/202603200353" alt="Broncos" style="width:42px;height:42px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:42px;height:42px;border-radius:8px;background:#800000;color:#FFD700;align-items:center;justify-content:center;font-size:11px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">BRO</div></div><span style="font-weight:800;color:#0f172a;font-size:17px;">Broncos</span>
+        </div>
+      </div>
+      <div class="pred-stats" style="display:grid;grid-template-columns:1fr 1fr 1fr 1.4fr;background:#fff;align-items:stretch;">
+        <div style="padding:16px 18px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Our Pick</div>
+          <div style="font-weight:900;color:#1e3a8a;background:#eef2ff;display:inline-block;padding:6px 14px;border-radius:8px;font-size:14px;align-self:flex-start;">Warriors</div>
+        </div>
+        <div style="padding:16px 18px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Our Odds</div>
+          <div style="font-weight:800;color:#0f172a;font-size:16px;font-variant-numeric:tabular-nums;">$1.57 / $2.75</div>
+        </div>
+        <div style="padding:16px 18px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Sportsbet</div>
+          <div style="font-weight:800;color:#0f172a;font-size:16px;font-variant-numeric:tabular-nums;">$1.69 / $2.17</div>
+        </div>
+        <div style="padding:16px 18px;background:#fafafa;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Signal</div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div style="color:#9ca3af;font-size:14px;padding:4px 0;">—</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(15,23,42,0.08);border:1px solid #bbf7d0;">
+      <div class="pred-header" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);padding:16px 22px;border-bottom:2px solid #bbf7d0;display:grid;grid-template-columns:1fr 180px 1fr;align-items:center;gap:12px;">
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:12px;">
+          <span style="font-weight:800;color:#0f172a;font-size:17px;text-align:right;">Panthers</span><div style="width:42px;height:42px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/panthers/202605110452" alt="Panthers" style="width:42px;height:42px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:42px;height:42px;border-radius:8px;background:#000000;color:#FFFFFF;align-items:center;justify-content:center;font-size:11px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">PEN</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <span style="color:#94a3b8;font-size:10px;font-weight:900;letter-spacing:2px;">VS</span>
+          <span style="background:#dcfce7;color:#166534;padding:6px 16px;border-radius:999px;font-size:13px;font-weight:900;white-space:nowrap;border:1px solid #bbf7d0;">94.7% · Strong</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:flex-start;gap:12px;">
+          <div style="width:42px;height:42px;flex-shrink:0;position:relative;"><img src="https://www.nrl.com/siteassets/2026/teams/dragons/202602250432" alt="Dragons" style="width:42px;height:42px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;width:42px;height:42px;border-radius:8px;background:#442400;color:#CC0000;align-items:center;justify-content:center;font-size:11px;font-weight:900;border:2px solid rgba(0,0,0,0.1);">SGI</div></div><span style="font-weight:800;color:#0f172a;font-size:17px;">Dragons</span>
+        </div>
+      </div>
+      <div class="pred-stats" style="display:grid;grid-template-columns:1fr 1fr 1fr 1.4fr;background:#fff;align-items:stretch;">
+        <div style="padding:16px 18px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Our Pick</div>
+          <div style="font-weight:900;color:#1e3a8a;background:#eef2ff;display:inline-block;padding:6px 14px;border-radius:8px;font-size:14px;align-self:flex-start;">Panthers</div>
+        </div>
+        <div style="padding:16px 18px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Our Odds</div>
+          <div style="font-weight:800;color:#0f172a;font-size:16px;font-variant-numeric:tabular-nums;">$1.06 / $18.73</div>
+        </div>
+        <div style="padding:16px 18px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Sportsbet</div>
+          <div style="font-weight:800;color:#0f172a;font-size:16px;font-variant-numeric:tabular-nums;">$1.04 / $11.50</div>
+        </div>
+        <div style="padding:16px 18px;background:#fafafa;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Signal</div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div style="color:#9ca3af;font-size:14px;padding:4px 0;">—</div></div>
+        </div>
+      </div>
+    </div></div>
+  <div style="font-size:12px;color:#9ca3af;margin-top:14px;">⚠️ Not financial advice. Bet responsibly | 18+ | gamblinghelponline.org.au</div>
+</div>
+
+<div class="card card-injury-key">
+  <h2>⚡ Key Players Currently Injured</h2>
+  <p class="section-intro">High-profile players (60+ 2025 SuperCoach avg) currently unavailable.</p>
+
+  <div class="key-injury">
+    <div>
+      <strong style="font-size:16px;">Joe Roddy</strong>
+      <span style="color:#6b7280;font-size:14px;margin-left:8px;">(Raiders)</span>
+      <div style="font-size:14px;color:#374151;margin-top:3px;">Hand — Return: <strong>Round 14</strong></div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:12px;">
+      <span class="badge" style="background:#fff7ed;color:#22c55e;">🟢 Near return</span>
+      <div style="font-size:13px;color:#6b7280;margin-top:4px;">106 SC avg</div>
+    </div>
+  </div>
+  <div class="key-injury">
+    <div>
+      <strong style="font-size:16px;">Payne Haas</strong>
+      <span style="color:#6b7280;font-size:14px;margin-left:8px;">(Broncos)</span>
+      <div style="font-size:14px;color:#374151;margin-top:3px;">Knee — Return: <strong>Round 14</strong></div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:12px;">
+      <span class="badge" style="background:#fff7ed;color:#22c55e;">🟢 Near return</span>
+      <div style="font-size:13px;color:#6b7280;margin-top:4px;">87 SC avg</div>
+    </div>
+  </div>
+  <div class="key-injury">
+    <div>
+      <strong style="font-size:16px;">Jacob Kiraz</strong>
+      <span style="color:#6b7280;font-size:14px;margin-left:8px;">(Bulldogs)</span>
+      <div style="font-size:14px;color:#374151;margin-top:3px;">Knee — Return: <strong>Round 12</strong></div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:12px;">
+      <span class="badge" style="background:#fff7ed;color:#22c55e;">🟢 Near return</span>
+      <div style="font-size:13px;color:#6b7280;margin-top:4px;">76 SC avg</div>
+    </div>
+  </div>
+  <div class="key-injury">
+    <div>
+      <strong style="font-size:16px;">David Fale</strong>
+      <span style="color:#6b7280;font-size:14px;margin-left:8px;">(Dragons)</span>
+      <div style="font-size:14px;color:#374151;margin-top:3px;">Hamstring — Return: <strong>TBC</strong></div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:12px;">
+      <span class="badge" style="background:#fff7ed;color:#ef4444;">🔴 Long-term</span>
+      <div style="font-size:13px;color:#6b7280;margin-top:4px;">76 SC avg</div>
+    </div>
+  </div>
+  <div class="key-injury">
+    <div>
+      <strong style="font-size:16px;">Mark Nawaqanitawase</strong>
+      <span style="color:#6b7280;font-size:14px;margin-left:8px;">(Roosters)</span>
+      <div style="font-size:14px;color:#374151;margin-top:3px;">Ankle — Return: <strong>Round 15</strong></div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:12px;">
+      <span class="badge" style="background:#fff7ed;color:#22c55e;">🟢 Near return</span>
+      <div style="font-size:13px;color:#6b7280;margin-top:4px;">75 SC avg</div>
+    </div>
+  </div>
+  <div class="key-injury">
+    <div>
+      <strong style="font-size:16px;">Valentine Holmes</strong>
+      <span style="color:#6b7280;font-size:14px;margin-left:8px;">(Dragons)</span>
+      <div style="font-size:14px;color:#374151;margin-top:3px;">Shoulder — Return: <strong>TBC</strong></div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:12px;">
+      <span class="badge" style="background:#fff7ed;color:#ef4444;">🔴 Long-term</span>
+      <div style="font-size:13px;color:#6b7280;margin-top:4px;">75 SC avg</div>
+    </div>
+  </div>
+  <div class="key-injury">
+    <div>
+      <strong style="font-size:16px;">Eliesa Katoa</strong>
+      <span style="color:#6b7280;font-size:14px;margin-left:8px;">(Storm)</span>
+      <div style="font-size:14px;color:#374151;margin-top:3px;">Concussion — Return: <strong>Indefinite</strong></div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:12px;">
+      <span class="badge" style="background:#fff7ed;color:#ef4444;">🔴 Long-term</span>
+      <div style="font-size:13px;color:#6b7280;margin-top:4px;">74 SC avg</div>
+    </div>
+  </div>
+  <div class="key-injury">
+    <div>
+      <strong style="font-size:16px;">Tom Trbojevic</strong>
+      <span style="color:#6b7280;font-size:14px;margin-left:8px;">(Sea Eagles)</span>
+      <div style="font-size:14px;color:#374151;margin-top:3px;">Hamstring — Return: <strong>Round 13</strong></div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:12px;">
+      <span class="badge" style="background:#fff7ed;color:#22c55e;">🟢 Near return</span>
+      <div style="font-size:13px;color:#6b7280;margin-top:4px;">71 SC avg</div>
+    </div>
+  </div>
+  <div class="key-injury">
+    <div>
+      <strong style="font-size:16px;">Roger Tuivasa-Sheck</strong>
+      <span style="color:#6b7280;font-size:14px;margin-left:8px;">(Warriors)</span>
+      <div style="font-size:14px;color:#374151;margin-top:3px;">Shoulder — Return: <strong>TBC</strong></div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:12px;">
+      <span class="badge" style="background:#fff7ed;color:#ef4444;">🔴 Long-term</span>
+      <div style="font-size:13px;color:#6b7280;margin-top:4px;">69 SC avg</div>
+    </div>
+  </div>
+  <div class="key-injury">
+    <div>
+      <strong style="font-size:16px;">Jamal Fogarty</strong>
+      <span style="color:#6b7280;font-size:14px;margin-left:8px;">(Sea Eagles)</span>
+      <div style="font-size:14px;color:#374151;margin-top:3px;">Groin — Return: <strong>Round 11</strong></div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:12px;">
+      <span class="badge" style="background:#fff7ed;color:#22c55e;">🟢 Near return</span>
+      <div style="font-size:13px;color:#6b7280;margin-top:4px;">68 SC avg</div>
+    </div>
+  </div>
+  <div class="key-injury">
+    <div>
+      <strong style="font-size:16px;">Heamasi Makasini</strong>
+      <span style="color:#6b7280;font-size:14px;margin-left:8px;">(Wests Tigers)</span>
+      <div style="font-size:14px;color:#374151;margin-top:3px;">Foot — Return: <strong>Round 13</strong></div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:12px;">
+      <span class="badge" style="background:#fff7ed;color:#22c55e;">🟢 Near return</span>
+      <div style="font-size:13px;color:#6b7280;margin-top:4px;">67 SC avg</div>
+    </div>
+  </div>
+  <div class="key-injury">
+    <div>
+      <strong style="font-size:16px;">Blayke Brailey</strong>
+      <span style="color:#6b7280;font-size:14px;margin-left:8px;">(Sharks)</span>
+      <div style="font-size:14px;color:#374151;margin-top:3px;">Head knock — Return: <strong>TBC</strong></div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:12px;">
+      <span class="badge" style="background:#fff7ed;color:#ef4444;">🔴 Long-term</span>
+      <div style="font-size:13px;color:#6b7280;margin-top:4px;">67 SC avg</div>
+    </div>
+  </div>
+  <div class="key-injury">
+    <div>
+      <strong style="font-size:16px;">Viliame Kikau</strong>
+      <span style="color:#6b7280;font-size:14px;margin-left:8px;">(Bulldogs)</span>
+      <div style="font-size:14px;color:#374151;margin-top:3px;">Pectoral — Return: <strong>Round 20</strong></div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:12px;">
+      <span class="badge" style="background:#fff7ed;color:#22c55e;">🟢 Near return</span>
+      <div style="font-size:13px;color:#6b7280;margin-top:4px;">66 SC avg</div>
+    </div>
+  </div>
+  <div class="key-injury">
+    <div>
+      <strong style="font-size:16px;">Murray Taulagi</strong>
+      <span style="color:#6b7280;font-size:14px;margin-left:8px;">(Cowboys)</span>
+      <div style="font-size:14px;color:#374151;margin-top:3px;">Concussion — Return: <strong>Round 12</strong></div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:12px;">
+      <span class="badge" style="background:#fff7ed;color:#22c55e;">🟢 Near return</span>
+      <div style="font-size:13px;color:#6b7280;margin-top:4px;">66 SC avg</div>
+    </div>
+  </div>
+  <div class="key-injury">
+    <div>
+      <strong style="font-size:16px;">Isaiah Iongi</strong>
+      <span style="color:#6b7280;font-size:14px;margin-left:8px;">(Eels)</span>
+      <div style="font-size:14px;color:#374151;margin-top:3px;">Ankle — Return: <strong>Round 13</strong></div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:12px;">
+      <span class="badge" style="background:#fff7ed;color:#22c55e;">🟢 Near return</span>
+      <div style="font-size:13px;color:#6b7280;margin-top:4px;">66 SC avg</div>
+    </div>
+  </div>
+  <div class="key-injury">
+    <div>
+      <strong style="font-size:16px;">Kotoni Staggs</strong>
+      <span style="color:#6b7280;font-size:14px;margin-left:8px;">(Broncos)</span>
+      <div style="font-size:14px;color:#374151;margin-top:3px;">Suspension — Return: <strong>Round 12</strong></div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:12px;">
+      <span class="badge" style="background:#fff7ed;color:#22c55e;">🟢 Near return</span>
+      <div style="font-size:13px;color:#6b7280;margin-top:4px;">65 SC avg</div>
+    </div>
+  </div>
+  <div class="key-injury">
+    <div>
+      <strong style="font-size:16px;">Xavier Coates</strong>
+      <span style="color:#6b7280;font-size:14px;margin-left:8px;">(Storm)</span>
+      <div style="font-size:14px;color:#374151;margin-top:3px;">Achilles — Return: <strong>Round 12</strong></div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:12px;">
+      <span class="badge" style="background:#fff7ed;color:#22c55e;">🟢 Near return</span>
+      <div style="font-size:13px;color:#6b7280;margin-top:4px;">65 SC avg</div>
+    </div>
+  </div>
+  <div class="key-injury">
+    <div>
+      <strong style="font-size:16px;">Adam Reynolds</strong>
+      <span style="color:#6b7280;font-size:14px;margin-left:8px;">(Broncos)</span>
+      <div style="font-size:14px;color:#374151;margin-top:3px;">Head knock — Return: <strong>TBC</strong></div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:12px;">
+      <span class="badge" style="background:#fff7ed;color:#ef4444;">🔴 Long-term</span>
+      <div style="font-size:13px;color:#6b7280;margin-top:4px;">65 SC avg</div>
+    </div>
+  </div>
+  <div class="key-injury">
+    <div>
+      <strong style="font-size:16px;">Latrell Mitchell</strong>
+      <span style="color:#6b7280;font-size:14px;margin-left:8px;">(Rabbitohs)</span>
+      <div style="font-size:14px;color:#374151;margin-top:3px;">Back — Return: <strong>Round 12</strong></div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:12px;">
+      <span class="badge" style="background:#fff7ed;color:#22c55e;">🟢 Near return</span>
+      <div style="font-size:13px;color:#6b7280;margin-top:4px;">64 SC avg</div>
+    </div>
+  </div>
+  <div class="key-injury">
+    <div>
+      <strong style="font-size:16px;">Ronaldo Mulitalo</strong>
+      <span style="color:#6b7280;font-size:14px;margin-left:8px;">(Sharks)</span>
+      <div style="font-size:14px;color:#374151;margin-top:3px;">ACL — Return: <strong>TBC</strong></div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:12px;">
+      <span class="badge" style="background:#fff7ed;color:#ef4444;">🔴 Long-term</span>
+      <div style="font-size:13px;color:#6b7280;margin-top:4px;">64 SC avg</div>
+    </div>
+  </div>
+  <div class="key-injury">
+    <div>
+      <strong style="font-size:16px;">Jaydn Su'A</strong>
+      <span style="color:#6b7280;font-size:14px;margin-left:8px;">(Dragons)</span>
+      <div style="font-size:14px;color:#374151;margin-top:3px;">Suspension — Return: <strong>Round 12</strong></div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:12px;">
+      <span class="badge" style="background:#fff7ed;color:#22c55e;">🟢 Near return</span>
+      <div style="font-size:13px;color:#6b7280;margin-top:4px;">63 SC avg</div>
+    </div>
+  </div>
+  <div class="key-injury">
+    <div>
+      <strong style="font-size:16px;">Zac Hosking</strong>
+      <span style="color:#6b7280;font-size:14px;margin-left:8px;">(Raiders)</span>
+      <div style="font-size:14px;color:#374151;margin-top:3px;">Concussion — Return: <strong>Indefinite</strong></div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:12px;">
+      <span class="badge" style="background:#fff7ed;color:#ef4444;">🔴 Long-term</span>
+      <div style="font-size:13px;color:#6b7280;margin-top:4px;">63 SC avg</div>
+    </div>
+  </div>
+  <div class="key-injury">
+    <div>
+      <strong style="font-size:16px;">Jahream Bula</strong>
+      <span style="color:#6b7280;font-size:14px;margin-left:8px;">(Wests Tigers)</span>
+      <div style="font-size:14px;color:#374151;margin-top:3px;">Shoulder — Return: <strong>Round 15</strong></div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:12px;">
+      <span class="badge" style="background:#fff7ed;color:#22c55e;">🟢 Near return</span>
+      <div style="font-size:13px;color:#6b7280;margin-top:4px;">62 SC avg</div>
+    </div>
+  </div>
+</div>
+
+<div class="card card-sc">
+  <h2>🏅 SuperCoach Draft Tips — Round 11</h2>
+  <p class="section-intro">
+    Based on 2025 season averages + 2026 opponent defensive strength.<br>
+    🔥 Dream · ✅ Good · ➡️ Neutral · ⚠️ Tough · 🚫 Avoid · 😴 BYE<br>
+    <strong>Always check Thursday team lists before locking in picks.</strong>
+  </p>
+  <h3 style="color:#166534;">⭐ Top Plays This Week</h3>
+
+  <div class="sc-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div><strong style="font-size:16px;">Eliesa Katoa</strong><span class="badge badge-blue" style="margin-left:8px;">MEL</span></div>
+      <span class="badge badge-green">74 SC avg</span>
+    </div>
+    <div style="font-size:14px;color:#374151;margin-top:6px;">🔥 vs <strong>Eels</strong> (AWAY) — 🔥 Dream matchup</div>
+  </div>
+  <div class="sc-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div><strong style="font-size:16px;">Cameron Munster</strong><span class="badge badge-blue" style="margin-left:8px;">MEL</span></div>
+      <span class="badge badge-green">70 SC avg</span>
+    </div>
+    <div style="font-size:14px;color:#374151;margin-top:6px;">🔥 vs <strong>Eels</strong> (AWAY) — 🔥 Dream matchup</div>
+  </div>
+  <div class="sc-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div><strong style="font-size:16px;">Nathan Cleary</strong><span class="badge badge-blue" style="margin-left:8px;">PTH</span></div>
+      <span class="badge badge-green">84 SC avg</span>
+    </div>
+    <div style="font-size:14px;color:#374151;margin-top:6px;">🔥 vs <strong>Dragons</strong> (HOME) — 🔥 Dream matchup</div>
+  </div>
+  <div class="sc-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div><strong style="font-size:16px;">Dylan Edwards</strong><span class="badge badge-blue" style="margin-left:8px;">PTH</span></div>
+      <span class="badge badge-green">80 SC avg</span>
+    </div>
+    <div style="font-size:14px;color:#374151;margin-top:6px;">🔥 vs <strong>Dragons</strong> (HOME) — 🔥 Dream matchup</div>
+  </div>
+  <div class="sc-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div><strong style="font-size:16px;">Jacob Kiraz</strong><span class="badge badge-blue" style="margin-left:8px;">BUL</span></div>
+      <span class="badge badge-green">76 SC avg</span>
+    </div>
+    <div style="font-size:14px;color:#374151;margin-top:6px;">✅ vs <strong>Sharks</strong> (AWAY) — ✅ Good matchup</div>
+  </div>
+  <div class="sc-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div><strong style="font-size:16px;">Jacob Preston</strong><span class="badge badge-blue" style="margin-left:8px;">BUL</span></div>
+      <span class="badge badge-green">70 SC avg</span>
+    </div>
+    <div style="font-size:14px;color:#374151;margin-top:6px;">✅ vs <strong>Sharks</strong> (AWAY) — ✅ Good matchup</div>
+  </div>
+  <div class="sc-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div><strong style="font-size:16px;">Isaiah Iongi</strong><span class="badge badge-blue" style="margin-left:8px;">PAR</span></div>
+      <span class="badge badge-green">66 SC avg</span>
+    </div>
+    <div style="font-size:14px;color:#374151;margin-top:6px;">✅ vs <strong>Storm</strong> (HOME) — ✅ Good matchup</div>
+  </div>
+  <div class="sc-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div><strong style="font-size:16px;">Jack Williams</strong><span class="badge badge-blue" style="margin-left:8px;">PAR</span></div>
+      <span class="badge badge-green">62 SC avg</span>
+    </div>
+    <div style="font-size:14px;color:#374151;margin-top:6px;">✅ vs <strong>Storm</strong> (HOME) — ✅ Good matchup</div>
+  </div>  <h3 style="color:#1e40af;">💎 Value Picks</h3>
+  <div class="sc-box value">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div><strong style="font-size:16px;">Jahrome Hughes</strong><span class="badge badge-blue" style="margin-left:8px;">MEL</span></div>
+      <span class="badge badge-blue">65 SC avg</span>
+    </div>
+    <div style="font-size:14px;color:#374151;margin-top:6px;">🔥 vs <strong>Eels</strong> (AWAY) — 🔥 Dream matchup</div>
+  </div>
+  <div class="sc-box value">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div><strong style="font-size:16px;">Harry Grant</strong><span class="badge badge-blue" style="margin-left:8px;">MEL</span></div>
+      <span class="badge badge-blue">62 SC avg</span>
+    </div>
+    <div style="font-size:14px;color:#374151;margin-top:6px;">🔥 vs <strong>Eels</strong> (AWAY) — 🔥 Dream matchup</div>
+  </div>
+  <div class="sc-box value">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div><strong style="font-size:16px;">Lindsay Smith</strong><span class="badge badge-blue" style="margin-left:8px;">PTH</span></div>
+      <span class="badge badge-blue">63 SC avg</span>
+    </div>
+    <div style="font-size:14px;color:#374151;margin-top:6px;">🔥 vs <strong>Dragons</strong> (HOME) — 🔥 Dream matchup</div>
+  </div>
+  <div class="sc-box value">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div><strong style="font-size:16px;">Isaah Yeo</strong><span class="badge badge-blue" style="margin-left:8px;">PTH</span></div>
+      <span class="badge badge-blue">62 SC avg</span>
+    </div>
+    <div style="font-size:14px;color:#374151;margin-top:6px;">🔥 vs <strong>Dragons</strong> (HOME) — 🔥 Dream matchup</div>
+  </div>  <h3 style="color:#991b1b;">⚠️ Watch Out — BYE or Tough Matchup</h3>
+  <div class="sc-avoid">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div><strong style="font-size:16px;">Joe Roddy</strong><span style="color:#6b7280;font-size:14px;margin-left:6px;">(CBR)</span></div>
+      <span class="badge badge-red">106 SC avg</span>
+    </div>
+    <div style="font-size:14px;color:#991b1b;margin-top:4px;">😴 BYE</div>
+  </div>
+  <div class="sc-avoid">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div><strong style="font-size:16px;">Payne Haas</strong><span style="color:#6b7280;font-size:14px;margin-left:6px;">(BRO)</span></div>
+      <span class="badge badge-red">87 SC avg</span>
+    </div>
+    <div style="font-size:14px;color:#991b1b;margin-top:4px;">🚫 Tough — vs Warriors</div>
+  </div>
+  <div class="sc-avoid">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div><strong style="font-size:16px;">Reece Walsh</strong><span style="color:#6b7280;font-size:14px;margin-left:6px;">(BRO)</span></div>
+      <span class="badge badge-red">85 SC avg</span>
+    </div>
+    <div style="font-size:14px;color:#991b1b;margin-top:4px;">🚫 Tough — vs Warriors</div>
+  </div>
+  <div class="sc-avoid">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div><strong style="font-size:16px;">Terrell May</strong><span style="color:#6b7280;font-size:14px;margin-left:6px;">(WST)</span></div>
+      <span class="badge badge-red">83 SC avg</span>
+    </div>
+    <div style="font-size:14px;color:#991b1b;margin-top:4px;">🚫 Tough — vs Sea Eagles</div>
+  </div>
+  <div class="sc-avoid">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div><strong style="font-size:16px;">Hudson Young</strong><span style="color:#6b7280;font-size:14px;margin-left:6px;">(CBR)</span></div>
+      <span class="badge badge-red">77 SC avg</span>
+    </div>
+    <div style="font-size:14px;color:#991b1b;margin-top:4px;">😴 BYE</div>
+  </div>
+  <div class="sc-avoid">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div><strong style="font-size:16px;">David Fale</strong><span style="color:#6b7280;font-size:14px;margin-left:6px;">(STG)</span></div>
+      <span class="badge badge-red">76 SC avg</span>
+    </div>
+    <div style="font-size:14px;color:#991b1b;margin-top:4px;">🚫 Tough — vs Panthers</div>
+  </div>
+  <div style="font-size:13px;color:#6b7280;margin-top:14px;">😴 BYE Round 11: Raiders</div>
+</div>
+
+<div class="card card-injury">
+  <h2>🏥 Full Injury & Suspension Report</h2>
+  <p class="section-intro">All players currently listed as injured or suspended.</p>
+  <p class="section-intro">🔴 Long-term/TBC &nbsp; 🟠 4–8 weeks &nbsp; 🟡 2–4 weeks &nbsp; 🟢 Near return</p>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px;align-items:center;">
+    <div style="display:flex;align-items:center;gap:6px;">
+      <label style="font-size:13px;font-weight:700;color:#374151;">Team</label>
+      <select id="inj-team-filter" onchange="filterInjuries()" style="border:1px solid #d1d5db;border-radius:8px;padding:7px 12px;font-size:14px;background:#fff;color:#0f172a;cursor:pointer;"><option value="ALL">All Teams</option><option value="Broncos">Broncos</option><option value="Bulldogs">Bulldogs</option><option value="Cowboys">Cowboys</option><option value="Dolphins">Dolphins</option><option value="Dragons">Dragons</option><option value="Eels">Eels</option><option value="Knights">Knights</option><option value="Panthers">Panthers</option><option value="Rabbitohs">Rabbitohs</option><option value="Raiders">Raiders</option><option value="Roosters">Roosters</option><option value="Sea Eagles">Sea Eagles</option><option value="Sharks">Sharks</option><option value="Storm">Storm</option><option value="Titans">Titans</option><option value="Warriors">Warriors</option><option value="Wests Tigers">Wests Tigers</option></select>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;">
+      <label style="font-size:13px;font-weight:700;color:#374151;">Sort by</label>
+      <select id="inj-sort" onchange="filterInjuries()" style="border:1px solid #d1d5db;border-radius:8px;padding:7px 12px;font-size:14px;background:#fff;color:#0f172a;cursor:pointer;">
+        <option value="team">Team</option>
+        <option value="return">Nearest Return</option>
+        <option value="sc-desc">2025 SC Avg ↓</option>
+        <option value="sc-asc">2025 SC Avg ↑</option>
+        <option value="severity">Most Severe</option>
+      </select>
+    </div>
+    <button onclick="resetInjuries()" style="border:1px solid #d1d5db;border-radius:8px;padding:7px 14px;font-size:14px;background:#f8fafc;color:#374151;cursor:pointer;font-weight:600;">↺ Reset</button>
+    <span id="inj-count" style="font-size:13px;color:#6b7280;margin-left:auto;">99 players</span>
+  </div>
+  <table id="inj-table" style="width:100%;border-collapse:collapse;font-size:15px;">
+    <thead><tr>
+      <th style="background:#f8fafc;padding:12px 14px;border-bottom:2px solid #e5e7eb;text-align:left;font-weight:600;color:#374151;">Player</th>
+      <th style="background:#f8fafc;padding:12px 14px;border-bottom:2px solid #e5e7eb;text-align:left;font-weight:600;color:#374151;">Team</th>
+      <th style="background:#f8fafc;padding:12px 14px;border-bottom:2px solid #e5e7eb;text-align:left;font-weight:600;color:#374151;">Injury</th>
+      <th style="background:#f8fafc;padding:12px 14px;border-bottom:2px solid #e5e7eb;text-align:left;font-weight:600;color:#374151;">Return</th>
+      <th style="background:#f8fafc;padding:12px 14px;border-bottom:2px solid #e5e7eb;text-align:left;font-weight:600;color:#374151;">Severity</th>
+      <th style="background:#f8fafc;padding:12px 14px;border-bottom:2px solid #e5e7eb;text-align:center;font-weight:600;color:#374151;">2025 SC Avg</th>
+    </tr></thead>
+    <tbody id="inj-tbody">
+    <tr data-team="Broncos" data-sev="2" data-sc="41.54">
+      <td style="font-weight:600;font-size:15px;">Billy Walters</td>
+      <td style="font-size:15px;">Broncos</td>
+      <td style="font-size:15px;">ACL</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">42</td>
+    </tr>
+    <tr data-team="Broncos" data-sev="2" data-sc="39.95">
+      <td style="font-weight:600;font-size:15px;">Corey Jensen</td>
+      <td style="font-size:15px;">Broncos</td>
+      <td style="font-size:15px;">Lung</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">40</td>
+    </tr>
+    <tr data-team="Broncos" data-sev="2" data-sc="50.44">
+      <td style="font-weight:600;font-size:15px;">Deine Mariner</td>
+      <td style="font-size:15px;">Broncos</td>
+      <td style="font-size:15px;">Thigh</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">50</td>
+    </tr>
+    <tr data-team="Broncos" data-sev="2" data-sc="31.22">
+      <td style="font-weight:600;font-size:15px;">Brendan Piakura</td>
+      <td style="font-size:15px;">Broncos</td>
+      <td style="font-size:15px;">Knee</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">31</td>
+    </tr>
+    <tr data-team="Broncos" data-sev="2" data-sc="64.75">
+      <td style="font-weight:600;font-size:15px;">Adam Reynolds</td>
+      <td style="font-size:15px;">Broncos</td>
+      <td style="font-size:15px;">Head knock</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">65</td>
+    </tr>
+    <tr data-team="Broncos" data-sev="9" data-sc="19.0">
+      <td style="font-weight:600;font-size:15px;">Benjamin Te Kura</td>
+      <td style="font-size:15px;">Broncos</td>
+      <td style="font-size:15px;">Personal</td>
+      <td style="font-size:15px;">Round 12</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">19</td>
+    </tr>
+    <tr data-team="Broncos" data-sev="9" data-sc="65.24">
+      <td style="font-weight:600;font-size:15px;">Kotoni Staggs</td>
+      <td style="font-size:15px;">Broncos</td>
+      <td style="font-size:15px;">Suspension</td>
+      <td style="font-size:15px;">Round 12</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">65</td>
+    </tr>
+    <tr data-team="Broncos" data-sev="9" data-sc="0">
+      <td style="font-weight:600;font-size:15px;">Blake Mozer</td>
+      <td style="font-size:15px;">Broncos</td>
+      <td style="font-size:15px;">Jaw</td>
+      <td style="font-size:15px;">Round 13</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">—</td>
+    </tr>
+    <tr data-team="Broncos" data-sev="9" data-sc="87.19">
+      <td style="font-weight:600;font-size:15px;">Payne Haas</td>
+      <td style="font-size:15px;">Broncos</td>
+      <td style="font-size:15px;">Knee</td>
+      <td style="font-size:15px;">Round 14</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">87</td>
+    </tr>
+    <tr data-team="Broncos" data-sev="9" data-sc="50.0">
+      <td style="font-weight:600;font-size:15px;">Delouise Hoeter</td>
+      <td style="font-size:15px;">Broncos</td>
+      <td style="font-size:15px;">Leg</td>
+      <td style="font-size:15px;">Round 15</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">50</td>
+    </tr>
+    <tr data-team="Broncos" data-sev="9" data-sc="53.52">
+      <td style="font-weight:600;font-size:15px;">Grant Anderson</td>
+      <td style="font-size:15px;">Broncos</td>
+      <td style="font-size:15px;">Knee</td>
+      <td style="font-size:15px;">Round 16</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">54</td>
+    </tr>
+    <tr data-team="Bulldogs" data-sev="2" data-sc="59.67">
+      <td style="font-weight:600;font-size:15px;">Max King</td>
+      <td style="font-size:15px;">Bulldogs</td>
+      <td style="font-size:15px;">Jaw</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">60</td>
+    </tr>
+    <tr data-team="Bulldogs" data-sev="2" data-sc="39.1">
+      <td style="font-weight:600;font-size:15px;">Kurt Mann</td>
+      <td style="font-size:15px;">Bulldogs</td>
+      <td style="font-size:15px;">Head knock</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">39</td>
+    </tr>
+    <tr data-team="Bulldogs" data-sev="2" data-sc="21.67">
+      <td style="font-weight:600;font-size:15px;">Jake Turpin</td>
+      <td style="font-size:15px;">Bulldogs</td>
+      <td style="font-size:15px;">Biceps</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">22</td>
+    </tr>
+    <tr data-team="Bulldogs" data-sev="2" data-sc="0">
+      <td style="font-weight:600;font-size:15px;">Mitchell Woods</td>
+      <td style="font-size:15px;">Bulldogs</td>
+      <td style="font-size:15px;">Hamstring</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">—</td>
+    </tr>
+    <tr data-team="Bulldogs" data-sev="9" data-sc="57.0">
+      <td style="font-weight:600;font-size:15px;">Matt Burton</td>
+      <td style="font-size:15px;">Bulldogs</td>
+      <td style="font-size:15px;">Illness</td>
+      <td style="font-size:15px;">Round 11</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">57</td>
+    </tr>
+    <tr data-team="Bulldogs" data-sev="9" data-sc="76.35">
+      <td style="font-weight:600;font-size:15px;">Jacob Kiraz</td>
+      <td style="font-size:15px;">Bulldogs</td>
+      <td style="font-size:15px;">Knee</td>
+      <td style="font-size:15px;">Round 12</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">76</td>
+    </tr>
+    <tr data-team="Bulldogs" data-sev="9" data-sc="66.5">
+      <td style="font-weight:600;font-size:15px;">Viliame Kikau</td>
+      <td style="font-size:15px;">Bulldogs</td>
+      <td style="font-size:15px;">Pectoral</td>
+      <td style="font-size:15px;">Round 20</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">66</td>
+    </tr>
+    <tr data-team="Cowboys" data-sev="9" data-sc="66.27">
+      <td style="font-weight:600;font-size:15px;">Murray Taulagi</td>
+      <td style="font-size:15px;">Cowboys</td>
+      <td style="font-size:15px;">Concussion</td>
+      <td style="font-size:15px;">Round 12</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">66</td>
+    </tr>
+    <tr data-team="Cowboys" data-sev="9" data-sc="52.24">
+      <td style="font-weight:600;font-size:15px;">Jeremiah Nanai</td>
+      <td style="font-size:15px;">Cowboys</td>
+      <td style="font-size:15px;">Shoulder</td>
+      <td style="font-size:15px;">Round 13</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">52</td>
+    </tr>
+    <tr data-team="Cowboys" data-sev="9" data-sc="25.0">
+      <td style="font-weight:600;font-size:15px;">Soni Luke</td>
+      <td style="font-size:15px;">Cowboys</td>
+      <td style="font-size:15px;">Knee</td>
+      <td style="font-size:15px;">Round 14</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">25</td>
+    </tr>
+    <tr data-team="Cowboys" data-sev="9" data-sc="0">
+      <td style="font-weight:600;font-size:15px;">Tom Dearden</td>
+      <td style="font-size:15px;">Cowboys</td>
+      <td style="font-size:15px;">Ankle</td>
+      <td style="font-size:15px;">Round 16</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">—</td>
+    </tr>
+    <tr data-team="Dolphins" data-sev="2" data-sc="42.94">
+      <td style="font-weight:600;font-size:15px;">Francis Molo</td>
+      <td style="font-size:15px;">Dolphins</td>
+      <td style="font-size:15px;">Ankle</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">43</td>
+    </tr>
+    <tr data-team="Dolphins" data-sev="2" data-sc="0">
+      <td style="font-weight:600;font-size:15px;">Daniel Saifiti</td>
+      <td style="font-size:15px;">Dolphins</td>
+      <td style="font-size:15px;">Shoulder</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">—</td>
+    </tr>
+    <tr data-team="Dolphins" data-sev="9" data-sc="50.82">
+      <td style="font-weight:600;font-size:15px;">Kurt Donoghoe</td>
+      <td style="font-size:15px;">Dolphins</td>
+      <td style="font-size:15px;">Hamstring</td>
+      <td style="font-size:15px;">Round 11</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">51</td>
+    </tr>
+    <tr data-team="Dolphins" data-sev="9" data-sc="59.21">
+      <td style="font-weight:600;font-size:15px;">Jake Averillo</td>
+      <td style="font-size:15px;">Dolphins</td>
+      <td style="font-size:15px;">Hand</td>
+      <td style="font-size:15px;">Round 15</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">59</td>
+    </tr>
+    <tr data-team="Dragons" data-sev="2" data-sc="59.0">
+      <td style="font-weight:600;font-size:15px;">Mathew Feagai</td>
+      <td style="font-size:15px;">Dragons</td>
+      <td style="font-size:15px;">Back</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">59</td>
+    </tr>
+    <tr data-team="Dragons" data-sev="2" data-sc="76.0">
+      <td style="font-weight:600;font-size:15px;">David Fale</td>
+      <td style="font-size:15px;">Dragons</td>
+      <td style="font-size:15px;">Hamstring</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">76</td>
+    </tr>
+    <tr data-team="Dragons" data-sev="2" data-sc="75.07">
+      <td style="font-weight:600;font-size:15px;">Valentine Holmes</td>
+      <td style="font-size:15px;">Dragons</td>
+      <td style="font-size:15px;">Shoulder</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">75</td>
+    </tr>
+    <tr data-team="Dragons" data-sev="2" data-sc="34.25">
+      <td style="font-weight:600;font-size:15px;">Nathan Lawson</td>
+      <td style="font-size:15px;">Dragons</td>
+      <td style="font-size:15px;">Head knock</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">34</td>
+    </tr>
+    <tr data-team="Dragons" data-sev="2" data-sc="45.71">
+      <td style="font-weight:600;font-size:15px;">Jacob Liddle</td>
+      <td style="font-size:15px;">Dragons</td>
+      <td style="font-size:15px;">Hamstring</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">46</td>
+    </tr>
+    <tr data-team="Dragons" data-sev="9" data-sc="48.65">
+      <td style="font-weight:600;font-size:15px;">Moses Suli</td>
+      <td style="font-size:15px;">Dragons</td>
+      <td style="font-size:15px;">Back</td>
+      <td style="font-size:15px;">Round 11</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">49</td>
+    </tr>
+    <tr data-team="Dragons" data-sev="9" data-sc="42.96">
+      <td style="font-weight:600;font-size:15px;">Luciano Leilua</td>
+      <td style="font-size:15px;">Dragons</td>
+      <td style="font-size:15px;">Suspension</td>
+      <td style="font-size:15px;">Round 11</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">43</td>
+    </tr>
+    <tr data-team="Dragons" data-sev="9" data-sc="20.81">
+      <td style="font-weight:600;font-size:15px;">Daniel Atkinson</td>
+      <td style="font-size:15px;">Dragons</td>
+      <td style="font-size:15px;">Hand</td>
+      <td style="font-size:15px;">Round 11</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">21</td>
+    </tr>
+    <tr data-team="Dragons" data-sev="9" data-sc="63.39">
+      <td style="font-weight:600;font-size:15px;">Jaydn Su'A</td>
+      <td style="font-size:15px;">Dragons</td>
+      <td style="font-size:15px;">Suspension</td>
+      <td style="font-size:15px;">Round 12</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">63</td>
+    </tr>
+    <tr data-team="Eels" data-sev="0" data-sc="52.96">
+      <td style="font-weight:600;font-size:15px;">J'maine Hopgood</td>
+      <td style="font-size:15px;">Eels</td>
+      <td style="font-size:15px;">ACL</td>
+      <td style="font-size:15px;">Next Season</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">53</td>
+    </tr>
+    <tr data-team="Eels" data-sev="0" data-sc="0">
+      <td style="font-weight:600;font-size:15px;">Matt Doorey</td>
+      <td style="font-size:15px;">Eels</td>
+      <td style="font-size:15px;">Knee</td>
+      <td style="font-size:15px;">Next Season</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">—</td>
+    </tr>
+    <tr data-team="Eels" data-sev="2" data-sc="51.0">
+      <td style="font-weight:600;font-size:15px;">Will Penisini</td>
+      <td style="font-size:15px;">Eels</td>
+      <td style="font-size:15px;">Groin</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">51</td>
+    </tr>
+    <tr data-team="Eels" data-sev="2" data-sc="51.67">
+      <td style="font-weight:600;font-size:15px;">Bailey Simonsson</td>
+      <td style="font-size:15px;">Eels</td>
+      <td style="font-size:15px;">Ankle</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">52</td>
+    </tr>
+    <tr data-team="Eels" data-sev="9" data-sc="38.91">
+      <td style="font-weight:600;font-size:15px;">Ryley Smith</td>
+      <td style="font-size:15px;">Eels</td>
+      <td style="font-size:15px;">Sternum</td>
+      <td style="font-size:15px;">Round 11</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">39</td>
+    </tr>
+    <tr data-team="Eels" data-sev="9" data-sc="18.86">
+      <td style="font-weight:600;font-size:15px;">Jonah Pezet</td>
+      <td style="font-size:15px;">Eels</td>
+      <td style="font-size:15px;">Suspension</td>
+      <td style="font-size:15px;">Round 11</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">19</td>
+    </tr>
+    <tr data-team="Eels" data-sev="9" data-sc="65.52">
+      <td style="font-weight:600;font-size:15px;">Isaiah Iongi</td>
+      <td style="font-size:15px;">Eels</td>
+      <td style="font-size:15px;">Ankle</td>
+      <td style="font-size:15px;">Round 13</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">66</td>
+    </tr>
+    <tr data-team="Eels" data-sev="9" data-sc="29.82">
+      <td style="font-weight:600;font-size:15px;">Sam Tuivaiti</td>
+      <td style="font-size:15px;">Eels</td>
+      <td style="font-size:15px;">Shoulder</td>
+      <td style="font-size:15px;">Round 13</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">30</td>
+    </tr>
+    <tr data-team="Knights" data-sev="9" data-sc="38.61">
+      <td style="font-weight:600;font-size:15px;">Thomas Cant</td>
+      <td style="font-size:15px;">Knights</td>
+      <td style="font-size:15px;">Calf</td>
+      <td style="font-size:15px;">Round 11</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">39</td>
+    </tr>
+    <tr data-team="Panthers" data-sev="2" data-sc="48.39">
+      <td style="font-weight:600;font-size:15px;">Liam Martin</td>
+      <td style="font-size:15px;">Panthers</td>
+      <td style="font-size:15px;">Knee</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">48</td>
+    </tr>
+    <tr data-team="Panthers" data-sev="9" data-sc="0">
+      <td style="font-weight:600;font-size:15px;">Mitch Kenny</td>
+      <td style="font-size:15px;">Panthers</td>
+      <td style="font-size:15px;">Leg</td>
+      <td style="font-size:15px;">Round 17</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">—</td>
+    </tr>
+    <tr data-team="Rabbitohs" data-sev="1" data-sc="55.08">
+      <td style="font-weight:600;font-size:15px;">Jai Arrow</td>
+      <td style="font-size:15px;">Rabbitohs</td>
+      <td style="font-size:15px;">Shoulder</td>
+      <td style="font-size:15px;">Indefinite</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">55</td>
+    </tr>
+    <tr data-team="Rabbitohs" data-sev="2" data-sc="37.83">
+      <td style="font-weight:600;font-size:15px;">Isaiah Tass</td>
+      <td style="font-size:15px;">Rabbitohs</td>
+      <td style="font-size:15px;">ACL</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">38</td>
+    </tr>
+    <tr data-team="Rabbitohs" data-sev="2" data-sc="27.8">
+      <td style="font-weight:600;font-size:15px;">Brandon Smith</td>
+      <td style="font-size:15px;">Rabbitohs</td>
+      <td style="font-size:15px;">Calf</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">28</td>
+    </tr>
+    <tr data-team="Rabbitohs" data-sev="9" data-sc="64.09">
+      <td style="font-weight:600;font-size:15px;">Latrell Mitchell</td>
+      <td style="font-size:15px;">Rabbitohs</td>
+      <td style="font-size:15px;">Back</td>
+      <td style="font-size:15px;">Round 12</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">64</td>
+    </tr>
+    <tr data-team="Rabbitohs" data-sev="9" data-sc="37.89">
+      <td style="font-weight:600;font-size:15px;">Jamie Humphreys</td>
+      <td style="font-size:15px;">Rabbitohs</td>
+      <td style="font-size:15px;">Knee</td>
+      <td style="font-size:15px;">Round 12</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">38</td>
+    </tr>
+    <tr data-team="Rabbitohs" data-sev="9" data-sc="49.63">
+      <td style="font-weight:600;font-size:15px;">David Fifita</td>
+      <td style="font-size:15px;">Rabbitohs</td>
+      <td style="font-size:15px;">Hamstring</td>
+      <td style="font-size:15px;">Round 12</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">50</td>
+    </tr>
+    <tr data-team="Rabbitohs" data-sev="9" data-sc="45.13">
+      <td style="font-weight:600;font-size:15px;">Jack Wighton</td>
+      <td style="font-size:15px;">Rabbitohs</td>
+      <td style="font-size:15px;">Arm</td>
+      <td style="font-size:15px;">Round 18</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">45</td>
+    </tr>
+    <tr data-team="Raiders" data-sev="1" data-sc="62.89">
+      <td style="font-weight:600;font-size:15px;">Zac Hosking</td>
+      <td style="font-size:15px;">Raiders</td>
+      <td style="font-size:15px;">Concussion</td>
+      <td style="font-size:15px;">Indefinite</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">63</td>
+    </tr>
+    <tr data-team="Raiders" data-sev="2" data-sc="28.5">
+      <td style="font-weight:600;font-size:15px;">Noah Martin</td>
+      <td style="font-size:15px;">Raiders</td>
+      <td style="font-size:15px;">Ankle</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">28</td>
+    </tr>
+    <tr data-team="Raiders" data-sev="2" data-sc="41.05">
+      <td style="font-weight:600;font-size:15px;">Simi Sasagi</td>
+      <td style="font-size:15px;">Raiders</td>
+      <td style="font-size:15px;">Shoulder</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">41</td>
+    </tr>
+    <tr data-team="Raiders" data-sev="9" data-sc="106.0">
+      <td style="font-weight:600;font-size:15px;">Joe Roddy</td>
+      <td style="font-size:15px;">Raiders</td>
+      <td style="font-size:15px;">Hand</td>
+      <td style="font-size:15px;">Round 14</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">106</td>
+    </tr>
+    <tr data-team="Raiders" data-sev="9" data-sc="47.55">
+      <td style="font-weight:600;font-size:15px;">Josh Papalii</td>
+      <td style="font-size:15px;">Raiders</td>
+      <td style="font-size:15px;">Calf</td>
+      <td style="font-size:15px;">Round 14</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">48</td>
+    </tr>
+    <tr data-team="Raiders" data-sev="9" data-sc="42.1">
+      <td style="font-weight:600;font-size:15px;">Xavier Savage</td>
+      <td style="font-size:15px;">Raiders</td>
+      <td style="font-size:15px;">Ankle</td>
+      <td style="font-size:15px;">Round 14</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">42</td>
+    </tr>
+    <tr data-team="Roosters" data-sev="0" data-sc="40.29">
+      <td style="font-weight:600;font-size:15px;">Blake Steep</td>
+      <td style="font-size:15px;">Roosters</td>
+      <td style="font-size:15px;">ACL</td>
+      <td style="font-size:15px;">Next Season</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">40</td>
+    </tr>
+    <tr data-team="Roosters" data-sev="2" data-sc="42.4">
+      <td style="font-weight:600;font-size:15px;">Lindsay Collins</td>
+      <td style="font-size:15px;">Roosters</td>
+      <td style="font-size:15px;">Head knock</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">42</td>
+    </tr>
+    <tr data-team="Roosters" data-sev="9" data-sc="52.35">
+      <td style="font-weight:600;font-size:15px;">Billy Smith</td>
+      <td style="font-size:15px;">Roosters</td>
+      <td style="font-size:15px;">Knee</td>
+      <td style="font-size:15px;">Round 11</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">52</td>
+    </tr>
+    <tr data-team="Roosters" data-sev="9" data-sc="36.31">
+      <td style="font-weight:600;font-size:15px;">Tommy Talau</td>
+      <td style="font-size:15px;">Roosters</td>
+      <td style="font-size:15px;">Calf</td>
+      <td style="font-size:15px;">Round 11</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">36</td>
+    </tr>
+    <tr data-team="Roosters" data-sev="9" data-sc="49.16">
+      <td style="font-weight:600;font-size:15px;">Victor Radley</td>
+      <td style="font-size:15px;">Roosters</td>
+      <td style="font-size:15px;">Suspension</td>
+      <td style="font-size:15px;">Round 13</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">49</td>
+    </tr>
+    <tr data-team="Roosters" data-sev="9" data-sc="75.18">
+      <td style="font-weight:600;font-size:15px;">Mark Nawaqanitawase</td>
+      <td style="font-size:15px;">Roosters</td>
+      <td style="font-size:15px;">Ankle</td>
+      <td style="font-size:15px;">Round 15</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">75</td>
+    </tr>
+    <tr data-team="Sea Eagles" data-sev="2" data-sc="43.79">
+      <td style="font-weight:600;font-size:15px;">Kobe Hetherington</td>
+      <td style="font-size:15px;">Sea Eagles</td>
+      <td style="font-size:15px;">Concussion</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">44</td>
+    </tr>
+    <tr data-team="Sea Eagles" data-sev="2" data-sc="0">
+      <td style="font-weight:600;font-size:15px;">Siosiua Taukeiaho</td>
+      <td style="font-size:15px;">Sea Eagles</td>
+      <td style="font-size:15px;">Leg</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">—</td>
+    </tr>
+    <tr data-team="Sea Eagles" data-sev="2" data-sc="31.57">
+      <td style="font-weight:600;font-size:15px;">Caleb Navale</td>
+      <td style="font-size:15px;">Sea Eagles</td>
+      <td style="font-size:15px;">ACL</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">32</td>
+    </tr>
+    <tr data-team="Sea Eagles" data-sev="9" data-sc="68.23">
+      <td style="font-weight:600;font-size:15px;">Jamal Fogarty</td>
+      <td style="font-size:15px;">Sea Eagles</td>
+      <td style="font-size:15px;">Groin</td>
+      <td style="font-size:15px;">Round 11</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">68</td>
+    </tr>
+    <tr data-team="Sea Eagles" data-sev="9" data-sc="0">
+      <td style="font-weight:600;font-size:15px;">Brandon Wakeham</td>
+      <td style="font-size:15px;">Sea Eagles</td>
+      <td style="font-size:15px;">Suspension</td>
+      <td style="font-size:15px;">Round 11</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">—</td>
+    </tr>
+    <tr data-team="Sea Eagles" data-sev="9" data-sc="70.78">
+      <td style="font-weight:600;font-size:15px;">Tom Trbojevic</td>
+      <td style="font-size:15px;">Sea Eagles</td>
+      <td style="font-size:15px;">Hamstring</td>
+      <td style="font-size:15px;">Round 13</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">71</td>
+    </tr>
+    <tr data-team="Sea Eagles" data-sev="9" data-sc="44.23">
+      <td style="font-weight:600;font-size:15px;">Corey Waddell</td>
+      <td style="font-size:15px;">Sea Eagles</td>
+      <td style="font-size:15px;">Pectoral</td>
+      <td style="font-size:15px;">Round 21</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">44</td>
+    </tr>
+    <tr data-team="Sharks" data-sev="2" data-sc="0">
+      <td style="font-weight:600;font-size:15px;">Liam Ison</td>
+      <td style="font-size:15px;">Sharks</td>
+      <td style="font-size:15px;">Knee</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">—</td>
+    </tr>
+    <tr data-team="Sharks" data-sev="2" data-sc="66.92">
+      <td style="font-weight:600;font-size:15px;">Blayke Brailey</td>
+      <td style="font-size:15px;">Sharks</td>
+      <td style="font-size:15px;">Head knock</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">67</td>
+    </tr>
+    <tr data-team="Sharks" data-sev="2" data-sc="63.83">
+      <td style="font-weight:600;font-size:15px;">Ronaldo Mulitalo</td>
+      <td style="font-size:15px;">Sharks</td>
+      <td style="font-size:15px;">ACL</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">64</td>
+    </tr>
+    <tr data-team="Sharks" data-sev="9" data-sc="51.33">
+      <td style="font-weight:600;font-size:15px;">Jesse Ramien</td>
+      <td style="font-size:15px;">Sharks</td>
+      <td style="font-size:15px;">Knee</td>
+      <td style="font-size:15px;">Round 11</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">51</td>
+    </tr>
+    <tr data-team="Sharks" data-sev="9" data-sc="56.0">
+      <td style="font-weight:600;font-size:15px;">Sione Katoa</td>
+      <td style="font-size:15px;">Sharks</td>
+      <td style="font-size:15px;">Ankle</td>
+      <td style="font-size:15px;">Round 14</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">56</td>
+    </tr>
+    <tr data-team="Storm" data-sev="1" data-sc="74.48">
+      <td style="font-weight:600;font-size:15px;">Eliesa Katoa</td>
+      <td style="font-size:15px;">Storm</td>
+      <td style="font-size:15px;">Concussion</td>
+      <td style="font-size:15px;">Indefinite</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">74</td>
+    </tr>
+    <tr data-team="Storm" data-sev="2" data-sc="58.14">
+      <td style="font-weight:600;font-size:15px;">Sua Fa'alogo</td>
+      <td style="font-size:15px;">Storm</td>
+      <td style="font-size:15px;">Head knock</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">58</td>
+    </tr>
+    <tr data-team="Storm" data-sev="2" data-sc="34.12">
+      <td style="font-weight:600;font-size:15px;">Alec MacDonald</td>
+      <td style="font-size:15px;">Storm</td>
+      <td style="font-size:15px;">Hamstring</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">34</td>
+    </tr>
+    <tr data-team="Storm" data-sev="2" data-sc="32.5">
+      <td style="font-weight:600;font-size:15px;">Marion Seve</td>
+      <td style="font-size:15px;">Storm</td>
+      <td style="font-size:15px;">Triceps</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">32</td>
+    </tr>
+    <tr data-team="Storm" data-sev="9" data-sc="65.11">
+      <td style="font-weight:600;font-size:15px;">Xavier Coates</td>
+      <td style="font-size:15px;">Storm</td>
+      <td style="font-size:15px;">Achilles</td>
+      <td style="font-size:15px;">Round 12</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">65</td>
+    </tr>
+    <tr data-team="Storm" data-sev="9" data-sc="41.17">
+      <td style="font-weight:600;font-size:15px;">Tyran Wishart</td>
+      <td style="font-size:15px;">Storm</td>
+      <td style="font-size:15px;">Ankle</td>
+      <td style="font-size:15px;">Round 15</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">41</td>
+    </tr>
+    <tr data-team="Titans" data-sev="0" data-sc="51.41">
+      <td style="font-weight:600;font-size:15px;">Jaimin Jolliffe</td>
+      <td style="font-size:15px;">Titans</td>
+      <td style="font-size:15px;">Knee</td>
+      <td style="font-size:15px;">Next Season</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">51</td>
+    </tr>
+    <tr data-team="Titans" data-sev="2" data-sc="17.0">
+      <td style="font-weight:600;font-size:15px;">Brock Gray</td>
+      <td style="font-size:15px;">Titans</td>
+      <td style="font-size:15px;">ACL</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">17</td>
+    </tr>
+    <tr data-team="Titans" data-sev="9" data-sc="27.0">
+      <td style="font-weight:600;font-size:15px;">Tukimihia Simpkins</td>
+      <td style="font-size:15px;">Titans</td>
+      <td style="font-size:15px;">Knee</td>
+      <td style="font-size:15px;">Round 12</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">27</td>
+    </tr>
+    <tr data-team="Titans" data-sev="9" data-sc="0">
+      <td style="font-weight:600;font-size:15px;">Siale Faeamani</td>
+      <td style="font-size:15px;">Titans</td>
+      <td style="font-size:15px;">Knee</td>
+      <td style="font-size:15px;">Round 13</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">—</td>
+    </tr>
+    <tr data-team="Warriors" data-sev="2" data-sc="53.95">
+      <td style="font-weight:600;font-size:15px;">Wayde Egan</td>
+      <td style="font-size:15px;">Warriors</td>
+      <td style="font-size:15px;">Head knock</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">54</td>
+    </tr>
+    <tr data-team="Warriors" data-sev="2" data-sc="68.56">
+      <td style="font-weight:600;font-size:15px;">Roger Tuivasa-Sheck</td>
+      <td style="font-size:15px;">Warriors</td>
+      <td style="font-size:15px;">Shoulder</td>
+      <td style="font-size:15px;">TBC</td>
+      <td><span style="font-weight:bold;color:#ef4444;">🔴 Long-term</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">69</td>
+    </tr>
+    <tr data-team="Warriors" data-sev="9" data-sc="32.58">
+      <td style="font-weight:600;font-size:15px;">Tanner Stowers-Smith</td>
+      <td style="font-size:15px;">Warriors</td>
+      <td style="font-size:15px;">Hamstring</td>
+      <td style="font-size:15px;">Round 11</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">33</td>
+    </tr>
+    <tr data-team="Warriors" data-sev="9" data-sc="53.33">
+      <td style="font-weight:600;font-size:15px;">Charnze Nicoll-Klokstad</td>
+      <td style="font-size:15px;">Warriors</td>
+      <td style="font-size:15px;">Neck</td>
+      <td style="font-size:15px;">Round 11</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">53</td>
+    </tr>
+    <tr data-team="Warriors" data-sev="9" data-sc="0">
+      <td style="font-weight:600;font-size:15px;">Mitch Barnett</td>
+      <td style="font-size:15px;">Warriors</td>
+      <td style="font-size:15px;">Concussion</td>
+      <td style="font-size:15px;">Round 11</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">—</td>
+    </tr>
+    <tr data-team="Warriors" data-sev="9" data-sc="34.0">
+      <td style="font-weight:600;font-size:15px;">Rocco Berry</td>
+      <td style="font-size:15px;">Warriors</td>
+      <td style="font-size:15px;">Shoulder</td>
+      <td style="font-size:15px;">Round 11</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">34</td>
+    </tr>
+    <tr data-team="Warriors" data-sev="9" data-sc="0">
+      <td style="font-weight:600;font-size:15px;">Jye Linnane</td>
+      <td style="font-size:15px;">Warriors</td>
+      <td style="font-size:15px;">Knee</td>
+      <td style="font-size:15px;">Round 12</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">—</td>
+    </tr>
+    <tr data-team="Wests Tigers" data-sev="9" data-sc="67.0">
+      <td style="font-weight:600;font-size:15px;">Heamasi Makasini</td>
+      <td style="font-size:15px;">Wests Tigers</td>
+      <td style="font-size:15px;">Foot</td>
+      <td style="font-size:15px;">Round 13</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">67</td>
+    </tr>
+    <tr data-team="Wests Tigers" data-sev="9" data-sc="55.41">
+      <td style="font-weight:600;font-size:15px;">Apisai Koroisau</td>
+      <td style="font-size:15px;">Wests Tigers</td>
+      <td style="font-size:15px;">Suspension</td>
+      <td style="font-size:15px;">Round 13</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">55</td>
+    </tr>
+    <tr data-team="Wests Tigers" data-sev="9" data-sc="62.06">
+      <td style="font-weight:600;font-size:15px;">Jahream Bula</td>
+      <td style="font-size:15px;">Wests Tigers</td>
+      <td style="font-size:15px;">Shoulder</td>
+      <td style="font-size:15px;">Round 15</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">62</td>
+    </tr>
+    <tr data-team="Wests Tigers" data-sev="9" data-sc="56.86">
+      <td style="font-weight:600;font-size:15px;">Adam Doueihi</td>
+      <td style="font-size:15px;">Wests Tigers</td>
+      <td style="font-size:15px;">Shoulder</td>
+      <td style="font-size:15px;">Round 16</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">57</td>
+    </tr>
+    <tr data-team="Wests Tigers" data-sev="9" data-sc="52.0">
+      <td style="font-weight:600;font-size:15px;">Samuela Fainu</td>
+      <td style="font-size:15px;">Wests Tigers</td>
+      <td style="font-size:15px;">Foot</td>
+      <td style="font-size:15px;">Round 22</td>
+      <td><span style="font-weight:bold;color:#22c55e;">🟢 Near return</span></td>
+      <td style="text-align:center;font-weight:700;color:#6d28d9 !important;font-size:15px;">52</td>
+    </tr></tbody>
+  </table>
+</div>
+
+<script>
+function filterInjuries() {
+  const team  = document.getElementById('inj-team-filter').value;
+  const sort  = document.getElementById('inj-sort').value;
+  const tbody = document.getElementById('inj-tbody');
+  let rows    = Array.from(tbody.querySelectorAll('tr'));
+  rows.forEach(r => { r.style.display = (team === 'ALL' || r.dataset.team === team) ? '' : 'none'; });
+  const visible = rows.filter(r => r.style.display !== 'none');
+  visible.sort((a, b) => {
+    if (sort === 'return' || sort === 'severity') return parseInt(a.dataset.sev) - parseInt(b.dataset.sev);
+    if (sort === 'sc-desc') return parseFloat(b.dataset.sc) - parseFloat(a.dataset.sc);
+    if (sort === 'sc-asc')  return parseFloat(a.dataset.sc) - parseFloat(b.dataset.sc);
+    const t = a.dataset.team.localeCompare(b.dataset.team);
+    return t !== 0 ? t : parseInt(a.dataset.sev) - parseInt(b.dataset.sev);
+  });
+  visible.forEach(r => tbody.appendChild(r));
+  document.getElementById('inj-count').textContent = visible.length + ' player' + (visible.length !== 1 ? 's' : '');
+}
+function resetInjuries() {
+  document.getElementById('inj-team-filter').value = 'ALL';
+  document.getElementById('inj-sort').value = 'team';
+  filterInjuries();
+}
+</script>
+
+<div class="footer">
+  <p>📊 Data: fixturedownload.com + The Odds API + ZeroTackle + SuperCoach</p>
+  <p>🤖 Model: Logistic Regression | 62.4% accuracy on 2025 season (213 matches)</p>
+  <p>💰 Bet responsibly | 18+ only | <a href="https://www.gamblinghelponline.org.au" style="color:#6b7280;">gamblinghelponline.org.au</a></p>
+  <p style="margin-top:6px;color:#d1d5db;">NRL Analytics Weekly © 2026</p>
+</div>
+
+</div></body></html>
